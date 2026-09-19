@@ -334,12 +334,11 @@
       ? "Adaptive Labs | Earn The Future"
       : "Adaptive Creative Studio | Earn The Future";
     document.querySelectorAll("[data-nav]").forEach(function (b) {
-      /* o Labs é uma subpágina do Estúdio, por isso o Estúdio fica marcado */
-      var here = b.dataset.nav === current ||
-                 (b.dataset.nav === "estudio" && current === "labs");
-      if (here) { b.setAttribute("aria-current", "page"); }
+      if (b.dataset.nav === current) { b.setAttribute("aria-current", "page"); }
       else { b.removeAttribute("aria-current"); }
     });
+    /* o Labs aparece na barra, com a bola, só enquanto se está lá */
+    document.querySelector(".nav-labs").hidden = current !== "labs";
     onScroll();
     /* o palco só tem dimensões quando a vista dele está visível */
     if (stage) { measureStage(); }

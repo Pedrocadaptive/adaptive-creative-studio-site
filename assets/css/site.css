@@ -258,6 +258,17 @@ img { max-width: 100%; display: block; }
   animation: pulse 2.6s ease-in-out .5s infinite;
 }
 
+/* Labs: entra na barra quando a página se abre, com a bola em roxo e azul */
+.nav-labs:not([hidden]) { animation: labsin .75s cubic-bezier(.2,.8,.3,1) .35s both; }
+@keyframes labsin {
+  from { opacity: 0; transform: translateX(-12px); filter: blur(4px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+.nav .nav-links .nav-labs::before {
+  background: linear-gradient(135deg, #b46bff, #7b82ff);
+  box-shadow: 0 0 10px rgba(180, 107, 255, .7);
+}
+
 .nav-right { display: flex; align-items: center; gap: 10px; flex: none; }
 
 /* no telemovel o PT/EN e o Contacto mudam-se para o painel das tres barras */
@@ -1407,7 +1418,7 @@ html.reveal-foot .megafoot {
 @media (prefers-reduced-motion: reduce) {
   .cover-light, .scrollcue img, .stub::before, .tile,
   .megafoot-glow, .badge-ring, .glass-dark::before, .redacted i, .labs-glow,
-  .nav-links button::before,
+  .nav-links button::before, .nav-labs,
   .chip-field .chip, .marquee-row, .chip.sweep::after { animation: none !important; }
   .stage.is-armed .chip,
   .stage.is-armed .tile { opacity: 1; filter: none; clip-path: none; }
