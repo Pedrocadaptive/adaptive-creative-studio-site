@@ -233,6 +233,9 @@
     mfl1: "Home", mfl2: "Work", mfl3: "About", mfl4: "Contact",
     mfsoon: "coming soon",
     e2more: "Discover",
+    okeye: "Message sent",
+    okp: "We have received your request. We will read it carefully and reply to the email you gave us.",
+    okagain: "Send another message",
     lbstate: "Coming soon",
     lbh: "The side of Adaptive that researches what comes next.",
     lbl1: "What it is",
@@ -284,28 +287,82 @@
     b.addEventListener("click", function () { setLang(b.dataset.langBtn); });
   });
 
-  /* ---------- formulario ---------- */
-  document.getElementById("form").addEventListener("submit", function (ev) {
+  /* ---------- formulario, enviado pelo Web3Forms ---------- */
+  /* a chave do Web3Forms é pública por natureza: só serve para entregar
+     mensagens no email associado a ela, não dá acesso a mais nada */
+  var WEB3FORMS_KEY = "0a654669-9b07-4588-8831-23c411cc2b0a";
+  var form       = document.getElementById("form");
+  var formDone   = document.getElementById("form-done");
+  var formStatus = document.getElementById("form-status");
+  var sendBtn    = form.querySelector(".submit");
+  var sendLabel  = form.querySelector(".submit-label");
+
+  function setSending(on) {
+    sendBtn.disabled = on;
+    sendBtn.setAttribute("aria-busy", on ? "true" : "false");
+    sendLabel.textContent = on ? (lang === "en" ? "Sending" : "A enviar")
+                               : (lang === "en" ? "Send" : "Enviar");
+  }
+
+  function showError() {
+    formStatus.innerHTML = (lang === "en"
+      ? "The message could not be sent right now. Please try again, or write to "
+      : "Não foi possível enviar agora. Tente de novo, ou escreva para ") +
+      '<a href="mailto:' + MAIL + '">' + MAIL + "</a>.";
+    formStatus.hidden = false;
+  }
+
+  function showDone(nome) {
+    var primeiro = nome.split(/\s+/)[0];
+    document.getElementById("done-title").textContent =
+      (lang === "en" ? "Thank you, " : "Obrigado, ") + primeiro + ".";
+    form.hidden = true;
+    formDone.hidden = false;
+    formDone.focus({ preventScroll: true });
+    formDone.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "center" });
+  }
+
+  form.addEventListener("submit", function (ev) {
     ev.preventDefault();
-    var f = ev.target;
-    var get = function (n) { return (f.elements[n].value || "").trim(); };
-    var nome = get("nome"), email = get("email");
-    if (!nome || !email || !get("mensagem")) {
-      f.reportValidity();
-      return;
-    }
-    var L = lang === "en";
-    var corpo = [
-      (L ? "Name: " : "Nome: ") + nome,
-      (L ? "Company: " : "Empresa: ") + (get("empresa") || (L ? "not given" : "não indicada")),
-      (L ? "Email: " : "Email: ") + email,
-      (L ? "Area: " : "Área: ") + (get("area") || (L ? "not sure yet" : "ainda não sei")),
-      "",
-      get("mensagem")
-    ].join("\n");
-    window.location.href = "mailto:" + MAIL +
-      "?subject=" + encodeURIComponent((L ? "New project, " : "Novo projeto, ") + nome) +
-      "&body=" + encodeURIComponent(corpo);
+    formStatus.hidden = true;
+    if (form.elements.botcheck.checked) { return; }
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    var get = function (n) { return (form.elements[n].value || "").trim(); };
+    var nome = get("nome");
+    var payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: "Novo contacto pelo site, " + nome,
+      from_name: "Site Adaptive Creative Studio",
+      replyto: get("email"),
+      nome: nome,
+      empresa: get("empresa") || "não indicada",
+      email: get("email"),
+      area: get("area") || "ainda não sei",
+      mensagem: get("mensagem"),
+      idioma: lang === "en" ? "Inglês" : "Português"
+    };
+
+    setSending(true);
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (res.ok && res.j && res.j.success) { showDone(nome); }
+        else { throw new Error((res.j && res.j.message) || "falhou"); }
+      })
+      .catch(function () { showError(); })
+      .then(function () { setSending(false); });
+  });
+
+  document.getElementById("form-again").addEventListener("click", function () {
+    form.reset();
+    formDone.hidden = true;
+    form.hidden = false;
+    form.elements.nome.focus();
   });
 
   /* ---------- tres vistas ---------- */

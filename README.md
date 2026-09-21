@@ -26,7 +26,8 @@ npx serve .
 
 ## Onde mudar o quê
 
-- **Email:** constante `MAIL` no início de `assets/js/site.js`. O formulário envia para esse endereço.
+- **Email mostrado no site:** constante `MAIL` no início de `assets/js/site.js`.
+- **Formulário:** é enviado pelo [Web3Forms](https://web3forms.com). A chave está em `WEB3FORMS_KEY`, em `assets/js/site.js`, e as mensagens chegam ao email com que a chave foi criada. A chave é pública por natureza: só serve para entregar mensagens nesse email.
 - **Telemóvel:** em `index.html`, procurar `tel:+351`.
 - **Redes sociais:** em `index.html`, procurar `instagram.com` e `facebook.com`.
 - **Textos em inglês:** objeto `EN` em `assets/js/site.js`. Os textos em português estão no próprio `index.html`.
@@ -35,5 +36,4 @@ npx serve .
 
 - Filme de capa (a capa tem uma luz feita em CSS no lugar).
 - Trabalhos reais (os quatro projetos estão fechados, com o nome por revelar).
-- Serviço de envio do formulário. Por agora abre o programa de email de quem o preenche.
 - Logótipo em SVG vetorial. Os ficheiros atuais são PNG.

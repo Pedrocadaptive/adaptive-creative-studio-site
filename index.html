@@ -289,7 +289,10 @@
     </div>
 
     <div class="contact-grid">
+      <div class="form-wrap">
       <form class="form" id="form" novalidate>
+        <!-- armadilha para robôs: invisível para pessoas -->
+        <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="field-row">
           <div class="field">
             <label for="f-nome" data-i18n="fnome">Nome</label>
@@ -314,8 +317,27 @@
           <label for="f-msg" data-i18n="fmsg">O que precisa de resolver</label>
           <textarea id="f-msg" name="mensagem" required></textarea>
         </div>
-        <button class="submit" type="submit" data-i18n="fsend">Enviar</button>
+        <button class="submit" type="submit"><span class="submit-label" data-i18n="fsend">Enviar</span></button>
+        <p class="form-status" id="form-status" role="alert" hidden></p>
       </form>
+
+      <!-- aviso de envio com sucesso, no lugar do formulário -->
+      <div class="form-done" id="form-done" tabindex="-1" hidden>
+        <div class="done-mark" aria-hidden="true">
+          <svg class="done-ring" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="46"></circle>
+            <circle class="prog"  cx="50" cy="50" r="46"></circle>
+          </svg>
+          <img src="assets/img/sym-black.png" alt="">
+        </div>
+        <p class="label" data-i18n="okeye">Mensagem enviada</p>
+        <p class="lede done-title" id="done-title">Obrigado.</p>
+        <p class="done-text" data-i18n="okp">Recebemos o seu pedido. Vamos ler com atenção e responder para o email que indicou.</p>
+        <button type="button" class="arrowlink" id="form-again">
+          <span data-i18n="okagain">Enviar outra mensagem</span><span class="arw" aria-hidden="true">→</span>
+        </button>
+      </div>
+      </div>
 
       <div class="how-side">
         <p class="label" data-i18n="hoh">Como trabalhamos</p>
