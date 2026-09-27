@@ -1294,6 +1294,192 @@ section { scroll-margin-top: 84px; }
 .direct a:hover { color: var(--brand); }
 
 /* ===============================================================
+   CASO DE ESTUDO: RD FISIOTERAPIA
+   A página veste as cores do cliente, dentro da estrutura da Adaptive
+   =============================================================== */
+#view-rd {
+  --rd-azul:    #160a50;
+  --rd-medio:   #3e3480;
+  --rd-lilas:   #6f67a8;
+  --rd-lavanda: #a6a0cf;
+  --rd-nevoa:   #f4f3f9;
+  --ink:        #160a50;
+  --muted:      #5b5480;
+  --line:       rgba(22, 10, 80, .14);
+  --line-soft:  rgba(22, 10, 80, .07);
+  --brand-ink:  #3e3480;
+  position: relative;
+  isolation: isolate;
+  background: var(--rd-nevoa);
+  color: var(--ink);
+}
+.caso-luz {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 150vh;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 30% at 12% 6%, rgba(166,160,207,.55), transparent 70%),
+    radial-gradient(42% 34% at 88% 22%, rgba(111,103,168,.38), transparent 72%),
+    radial-gradient(40% 30% at 50% 62%, rgba(62,52,128,.16), transparent 74%);
+  filter: blur(30px);
+}
+.caso-titulo { font-size: clamp(2rem, 6vw, 4rem); max-width: 14ch; }
+.caso-meta { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+@media (min-width: 720px) { .caso-meta { grid-auto-flow: column; justify-content: start; gap: 48px; } }
+.caso-meta li { display: grid; gap: 3px; font-size: .95rem; }
+.caso-meta span:first-child {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* moldura em vidro para as imagens */
+.glass {
+  position: relative;
+  margin: 0;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .42);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+          backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, .7);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    0 30px 60px -40px rgba(22, 10, 80, .5);
+  overflow: hidden;
+}
+.glass img, .glass video { width: 100%; height: auto; border-radius: 9px; display: block; }
+.glass-wide { margin-block: clamp(26px, 4vw, 46px); }
+.caso-capa video { aspect-ratio: 16 / 9; object-fit: cover; background: var(--rd-azul); }
+.glass figcaption {
+  display: grid;
+  gap: 5px;
+  padding: 15px 8px 7px;
+}
+.glass figcaption strong {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.02rem;
+  color: var(--ink);
+}
+.glass figcaption span { font-size: .87rem; line-height: 1.55; color: var(--muted); }
+
+/* quatro passos da construção */
+.passos { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; counter-reset: p; }
+@media (min-width: 760px) { .passos { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
+.passos li {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 22px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.7);
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+}
+.passo-n {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: .2em;
+  color: var(--rd-lilas);
+  font-variant-numeric: tabular-nums;
+}
+.passos h3 { font-family: var(--display); font-weight: 500; font-size: 1.05rem; margin: 0; }
+.passos p { margin: 0; font-size: .9rem; color: var(--muted); }
+/* o último passo mostra o símbolo final, em azul sobre o mesmo vidro claro */
+.passo-fim { border-color: var(--rd-lavanda); box-shadow: 0 20px 44px -34px rgba(22,10,80,.6); }
+.passo-fim img { width: 78px; height: auto; margin-top: 12px; }
+
+.leituras { display: grid; gap: 20px; }
+@media (min-width: 820px) { .leituras { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+.leituras .glass img { aspect-ratio: 4 / 5; object-fit: cover; }
+
+/* paleta do cliente */
+.cores { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 10px; }
+@media (min-width: 640px) { .cores { grid-template-columns: repeat(5, 1fr); } }
+.cores li {
+  display: grid;
+  gap: 3px;
+  align-content: end;
+  min-height: 118px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--c);
+  color: #fff;
+  border: 1px solid rgba(22,10,80,.1);
+}
+.cores li.clara { color: var(--rd-azul); }
+.cores span { font-family: var(--display); font-weight: 500; font-size: .84rem; }
+.cores code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .74rem; opacity: .8; }
+
+/* tipografia do cliente */
+.tipo { margin-top: 22px; display: grid; gap: 18px; }
+.tipo-amostra {
+  font-family: "Outfit", var(--display);
+  font-weight: 300;
+  font-size: clamp(1.7rem, 4.4vw, 3rem);
+  letter-spacing: -.02em;
+  color: var(--rd-azul);
+  margin: 0;
+}
+.tipo-pesos { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.tipo-pesos li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: .9rem;
+}
+.tipo-pesos li span:first-child { font-family: "Outfit", var(--display); min-width: 148px; color: var(--ink); }
+.tipo-pesos li span:last-child { color: var(--muted); }
+
+/* galeria da imagem de marca */
+.galeria { display: grid; gap: 20px; }
+@media (min-width: 820px) { .galeria { grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; } }
+.galeria .glass img { aspect-ratio: 4 / 5; object-fit: cover; }
+@media (min-width: 820px) { .galeria .g-alta { grid-row: span 2; } .galeria .g-alta img { aspect-ratio: 3 / 5; } }
+
+.aplicacoes { display: grid; gap: 20px; }
+@media (min-width: 700px) { .aplicacoes { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
+@media (min-width: 1100px) { .aplicacoes { grid-template-columns: repeat(3, 1fr); } }
+.aplicacoes .glass img { aspect-ratio: 4 / 5; object-fit: cover; }
+/* a fachada abre a secção a toda a largura, o saco fecha a duas colunas */
+.aplicacoes .larga img, .aplicacoes .dupla img { aspect-ratio: 16 / 10; }
+@media (min-width: 700px) { .aplicacoes .larga, .aplicacoes .dupla { grid-column: span 2; } }
+@media (min-width: 1100px) { .aplicacoes .larga { grid-column: span 3; } }
+
+.caso-mote { margin: 0; display: grid; gap: 14px; justify-items: center; text-align: center; padding-block: clamp(30px, 5vw, 56px); }
+.caso-mote img { width: 54px; height: auto; }
+.caso-mote p {
+  font-family: "Outfit", var(--display);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  letter-spacing: -.02em;
+  color: var(--rd-azul);
+  margin: 0;
+}
+.caso-mote cite {
+  font-family: var(--display);
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* o cartão do trabalho real, na página inicial */
+.work-card.is-real .work-shot video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ===============================================================
    AVISO INICIAL E POLITICA DE PRIVACIDADE
    =============================================================== */
 .linkish {

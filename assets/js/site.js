@@ -247,6 +247,36 @@
     pvh: "How we handle your data.",
     pvdate: "Last updated: 27 September 2026",
     pvback: "Back", pvreset: "Review my cookie choice",
+    rdcat: "Brand Identity",
+    rdm1: "Client", rdm2: "Work", rdm2v: "Brand identity and guidelines", rdm3: "Year",
+    rdl1: "The starting point",
+    rdp1: "Rodrigo had a working clinic and no brand at all. The name appeared handwritten on social media, and there was nothing that could go on a façade, a uniform or a document.",
+    rdp2: "The question was not how to invent a symbol from scratch. It was how to give him one that had always been his.",
+    rdl2: "The idea",
+    rdp3: "We went to the official symbol of physiotherapy: an open hand protecting a human figure. The hand is the care of the person treating. The figure is the person being treated.",
+    rdp4: "Instead of starting from nothing, the brand is born from the symbol that already stands for the profession, and now keeps Rodrigo's initials inside it. Nobody has to explain what he does: the symbol says it.",
+    rdl3: "From the figure to the RD", rdl3s: "Four steps",
+    rds1: "The symbol", rds1d: "The hand protects a human figure.",
+    rds2: "The inner figure", rds2d: "Head, open arms and body.",
+    rds3: "The initials", rds3d: "The left arm draws the R. The right one closes the D.",
+    rds4: "The RD symbol", rds4d: "The head becomes the dot. The body separates the letters.",
+    rdp1b: "The market changed and demands it. Having a brand stopped being a luxury for big companies and became the minimum condition to be taken seriously. Adapting to that demand was the starting point of the project.",
+    rdl9: "The brand in pictures", rdl9s: "Side light, two tones, the symbol over the body",
+    rdl4: "Three readings of the same gesture",
+    rdle1: "Evolution", rdle1d: "The arrow points up and forward. It is the path of recovery, session after session.",
+    rdle2: "Movement", rdle2d: "With the dot, the R is a person stretching: one leg in front of the other, arms back.",
+    rdle3: "Care", rdle3d: "From another angle, it is someone lying on the table, arms half open, given over to the treatment.",
+    rdl5: "Colour",
+    rdp5: "RD Blue is the primary colour. The supporting tones derive from it and serve backgrounds, graphics and hierarchy. The recommended proportion is 60% white or Mist, 30% RD Blue and 10% supporting tones.",
+    rdl6: "Typography",
+    rdp6: "Outfit, geometric and soft like the symbol. It is free and on Google Fonts, so Rodrigo can use it anywhere without depending on anyone.",
+    rdt1: "Headings and brand name", rdt2: "Subheadings and highlights",
+    rdt3: "Body text", rdt4: "Quotes and large text",
+    rdl7: "The pattern",
+    rdp7: "The bottom stroke of each D continues into the bar of the next arrow. The symbols link into diagonal chains, like a continuous path. It is the same idea as the logo, said more quietly, for backgrounds, uniforms and stationery.",
+    rdl8: "Applications", rdl8s: "Uniforms and merchandising",
+    rdcite: "Brand line, born from the symbol itself",
+    rdback: "See all work", rdcta: "Want an identity like this?",
     okeye: "Message sent",
     okp: "We have received your request. We will read it carefully and reply to the email you gave us.",
     okagain: "Send another message",
@@ -389,7 +419,8 @@
     estudio:  document.getElementById("view-estudio"),
     contacto: document.getElementById("view-contacto"),
     labs:     document.getElementById("view-labs"),
-    privacidade: document.getElementById("view-privacidade")
+    privacidade: document.getElementById("view-privacidade"),
+    rd:          document.getElementById("view-rd")
   };
   var current = "inicio";
   var vistaInicial = true;
@@ -407,6 +438,7 @@
     /* o separador do browser diz em que casa estamos */
     document.title =
       current === "labs"        ? "Adaptive Labs | Earn The Future" :
+      current === "rd"          ? "RD Fisioterapia | Adaptive Creative Studio" :
       current === "privacidade" ? "Política de Privacidade | Adaptive Creative Studio" :
                                   "Adaptive Creative Studio | Earn The Future";
     /* página nova vista, contada só depois da primeira */
@@ -422,6 +454,7 @@
     /* o palco só tem dimensões quando a vista dele está visível */
     if (stage) { measureStage(); }
     if (well) { sizeWell(); }
+    if (window.__ligarVideosDaVista && views[current]) { window.__ligarVideosDaVista(views[current]); }
     if (anchor) {
       var el = document.getElementById(anchor);
       if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
@@ -770,6 +803,33 @@
     new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { navWork.classList.toggle("is-here", e.isIntersecting); });
     }, { rootMargin: "-38% 0px -48% 0px" }).observe(document.getElementById("trabalhos"));
+  }
+
+  /* ---------- vídeos: só carregam e rodam enquanto estão no ecrã ---------- */
+  var videos = document.querySelectorAll("[data-video]");
+
+  function ligarVideo(v) {
+    if (!v.getAttribute("src")) {
+      v.autoplay = true;                 /* assim arranca assim que o ficheiro chega */
+      v.setAttribute("src", v.dataset.src);
+    }
+    var p = v.play();
+    if (p && p.catch) { p.catch(function () {}); }   /* se o browser recusar, fica a imagem de espera */
+  }
+  window.__ligarVideosDaVista = function (raiz) {
+    (raiz || document).querySelectorAll("[data-video]").forEach(ligarVideo);
+  };
+
+  if (videos.length && "IntersectionObserver" in window) {
+    var vio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { ligarVideo(e.target); }
+        else if (!e.target.paused) { e.target.pause(); }
+      });
+    }, { threshold: 0.2 });
+    videos.forEach(function (v) { vio.observe(v); });
+  } else {
+    videos.forEach(ligarVideo);
   }
 
   /* ---------- selo do rodapé: o texto é montado letra a letra à volta do círculo ---------- */
