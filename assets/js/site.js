@@ -233,6 +233,20 @@
     mfl1: "Home", mfl2: "Work", mfl3: "About", mfl4: "Contact",
     mfsoon: "coming soon",
     e2more: "Discover",
+    ntext: "We use our own cookies to run the site and, if you allow it, marketing cookies that let us show you Adaptive ads on Facebook and Instagram. You can change your mind at any time.",
+    nok: "Accept", nno: "Reject", nsave: "Save choices", nchoose: "Choose",
+    cat1: "Necessary",
+    cat1d: "They keep the language you choose and this choice, on your device. Without them the site does not work properly.",
+    cat2: "Marketing",
+    cat2d: "Meta Pixel, to measure interest in the site and show you Adaptive ads on Facebook and Instagram.",
+    cat2s: "Turn on marketing cookies",
+    catalways: "Always on",
+    nlink: "Privacy policy",
+    flegal: "By sending, your data is handled according to our",
+    flegal2: "privacy and cookies policy",
+    pvh: "How we handle your data.",
+    pvdate: "Last updated: 27 September 2026",
+    pvback: "Back", pvreset: "Review my cookie choice",
     okeye: "Message sent",
     okp: "We have received your request. We will read it carefully and reply to the email you gave us.",
     okagain: "Send another message",
@@ -278,6 +292,7 @@
       if (v !== undefined) { n.innerHTML = v; }
     });
     document.documentElement.lang = lang === "en" ? "en" : "pt-PT";
+    document.getElementById("legal-en").hidden = lang !== "en";
     langBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.langBtn === lang)); });
     paintServices();
     if (stage) { measureStage(); }
@@ -316,6 +331,7 @@
     var primeiro = nome.split(/\s+/)[0];
     document.getElementById("done-title").textContent =
       (lang === "en" ? "Thank you, " : "Obrigado, ") + primeiro + ".";
+    if (window.__pixelLead) { window.__pixelLead(); }
     form.hidden = true;
     formDone.hidden = false;
     formDone.focus({ preventScroll: true });
@@ -372,9 +388,11 @@
     inicio:   document.getElementById("view-inicio"),
     estudio:  document.getElementById("view-estudio"),
     contacto: document.getElementById("view-contacto"),
-    labs:     document.getElementById("view-labs")
+    labs:     document.getElementById("view-labs"),
+    privacidade: document.getElementById("view-privacidade")
   };
   var current = "inicio";
+  var vistaInicial = true;
 
   function onScroll() {
     nav.classList.toggle("on-dark", current === "labs");
@@ -387,9 +405,13 @@
     current = views[view] ? view : "inicio";
     Object.keys(views).forEach(function (k) { views[k].hidden = (k !== current); });
     /* o separador do browser diz em que casa estamos */
-    document.title = current === "labs"
-      ? "Adaptive Labs | Earn The Future"
-      : "Adaptive Creative Studio | Earn The Future";
+    document.title =
+      current === "labs"        ? "Adaptive Labs | Earn The Future" :
+      current === "privacidade" ? "Política de Privacidade | Adaptive Creative Studio" :
+                                  "Adaptive Creative Studio | Earn The Future";
+    /* página nova vista, contada só depois da primeira */
+    if (!vistaInicial && window.__pixelPagina) { window.__pixelPagina(); }
+    vistaInicial = false;
     document.querySelectorAll("[data-nav]").forEach(function (b) {
       if (b.dataset.nav === current) { b.setAttribute("aria-current", "page"); }
       else { b.removeAttribute("aria-current"); }
@@ -817,6 +839,116 @@
   }
   window.addEventListener("scroll", navFootCheck, { passive: true });
   window.addEventListener("resize", navFootCheck);
+
+  /* ---------- consentimento de cookies ----------
+     Nada de marketing é carregado antes de a pessoa dizer que sim.
+     A escolha fica guardada no dispositivo e pode ser mudada a qualquer momento. */
+  var CONSENT_KEY = "adaptive-consentimento";
+  var META_PIXEL_ID = "1641716630816449";
+
+  var notice     = document.getElementById("notice");
+  var cats       = document.getElementById("notice-cats");
+  var catMkt     = document.getElementById("cat-marketing");
+  var btnSave    = document.getElementById("notice-save");
+  var pixelPosto = false;
+
+  function lerConsentimento() {
+    try { return JSON.parse(localStorage.getItem(CONSENT_KEY)); }
+    catch (e) { return null; }
+  }
+
+  function guardarConsentimento(marketing) {
+    var escolha = { v: 1, marketing: !!marketing, data: new Date().toISOString() };
+    try { localStorage.setItem(CONSENT_KEY, JSON.stringify(escolha)); } catch (e) {}
+    return escolha;
+  }
+
+  /* o pixel da Meta, carregado à mão só quando há consentimento */
+  function carregarPixel() {
+    if (pixelPosto || window.fbq) { return; }
+    pixelPosto = true;
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0";
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    window.fbq("init", META_PIXEL_ID);
+    window.fbq("track", "PageView");
+  }
+
+  /* páginas vistas a seguir, já sem recarregar o site */
+  function pixelPagina() {
+    if (window.fbq && pixelPosto) { window.fbq("track", "PageView"); }
+  }
+  /* pedido de contacto enviado */
+  function pixelLead() {
+    if (window.fbq && pixelPosto) { window.fbq("track", "Lead"); }
+  }
+  window.__pixelPagina = pixelPagina;
+  window.__pixelLead = pixelLead;
+
+  function mostrarAviso() {
+    var atual = lerConsentimento();
+    catMkt.checked = !!(atual && atual.marketing);
+    notice.classList.remove("is-out");
+    notice.hidden = false;
+    document.documentElement.classList.add("notice-open");
+  }
+
+  function fecharAviso() {
+    notice.classList.add("is-out");
+    document.documentElement.classList.remove("notice-open");
+    setTimeout(function () { notice.hidden = true; }, REDUCED ? 0 : 420);
+  }
+
+  function aplicar(marketing, jaTinhaPixel) {
+    guardarConsentimento(marketing);
+    if (marketing) { carregarPixel(); fecharAviso(); return; }
+    /* retirou o consentimento com o pixel já a correr: recarrega para o limpar de vez */
+    if (jaTinhaPixel) {
+      if (window.fbq) { try { window.fbq("consent", "revoke"); } catch (e) {} }
+      location.reload();
+      return;
+    }
+    fecharAviso();
+  }
+
+  document.getElementById("notice-ok").addEventListener("click", function () {
+    aplicar(true, pixelPosto);
+  });
+  document.getElementById("notice-no").addEventListener("click", function () {
+    aplicar(false, pixelPosto);
+  });
+  btnSave.addEventListener("click", function () {
+    aplicar(catMkt.checked, pixelPosto);
+  });
+  document.getElementById("notice-choose").addEventListener("click", function () {
+    var abrir = cats.hidden;
+    cats.hidden = !abrir;
+    btnSave.hidden = !abrir;
+    this.textContent = abrir
+      ? (lang === "en" ? "Close options" : "Fechar opções")
+      : (lang === "en" ? "Choose" : "Escolher");
+  });
+
+  /* na política pode-se rever a escolha a qualquer momento */
+  document.getElementById("priv-reset").addEventListener("click", mostrarAviso);
+
+  var escolhaGuardada = lerConsentimento();
+  if (!escolhaGuardada) {
+    /* espera o ecrã de entrada acabar, para não aparecer por cima dele */
+    setTimeout(mostrarAviso, REDUCED ? 200 : 2600);
+  } else if (escolhaGuardada.marketing) {
+    carregarPixel();
+  }
+
+  document.getElementById("priv-back").addEventListener("click", function () {
+    if (history.length > 1) { history.back(); }
+    else { location.hash = "inicio"; }
+  });
 
   var savedLang = "pt";
   try { savedLang = localStorage.getItem("adaptive-lang") || "pt"; } catch (e) {}

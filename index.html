@@ -77,6 +77,47 @@
   </div>
 </div>
 
+<!-- aviso inicial. Some quando se aceita e não volta a aparecer -->
+<div class="notice" id="notice" role="region" aria-label="Aviso de cookies" hidden>
+  <p class="notice-text" data-i18n="ntext">
+    Usamos cookies próprios para o site funcionar e, se autorizar, cookies de marketing que nos
+    permitem mostrar-lhe anúncios da Adaptive no Facebook e no Instagram. Pode mudar de ideias
+    a qualquer momento.
+  </p>
+
+  <div class="notice-cats" id="notice-cats" hidden>
+    <div class="cat">
+      <div>
+        <p class="cat-name" data-i18n="cat1">Necessários</p>
+        <p class="cat-desc" data-i18n="cat1d">Guardam o idioma que escolher e esta escolha, no seu dispositivo. Sem eles o site não funciona como deve.</p>
+      </div>
+      <span class="cat-always" data-i18n="catalways">Sempre ativos</span>
+    </div>
+    <div class="cat">
+      <div>
+        <p class="cat-name" data-i18n="cat2">Marketing</p>
+        <p class="cat-desc" data-i18n="cat2d">Pixel da Meta, para medir o interesse pelo site e mostrar-lhe anúncios da Adaptive no Facebook e no Instagram.</p>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="cat-marketing">
+        <span class="switch-track" aria-hidden="true"></span>
+        <span class="sr-only" data-i18n="cat2s">Ativar cookies de marketing</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="notice-actions">
+    <button type="button" class="notice-btn" id="notice-ok" data-i18n="nok">Aceitar</button>
+    <button type="button" class="notice-btn ghost" id="notice-no" data-i18n="nno">Recusar</button>
+    <button type="button" class="notice-btn ghost" id="notice-save" hidden data-i18n="nsave">Guardar escolhas</button>
+  </div>
+
+  <div class="notice-links">
+    <button type="button" class="linkish on-dark" id="notice-choose" data-i18n="nchoose">Escolher</button>
+    <button type="button" class="linkish on-dark" data-go="privacidade" data-i18n="nlink">Política de privacidade</button>
+  </div>
+</div>
+
 <!-- tudo o que desliza por cima do rodapé -->
 <div id="shell">
 
@@ -327,6 +368,10 @@
         </div>
         <button class="submit" type="submit"><span class="submit-label" data-i18n="fsend">Enviar</span></button>
         <p class="form-status" id="form-status" role="alert" hidden></p>
+        <p class="form-legal">
+          <span data-i18n="flegal">Ao enviar, os seus dados são tratados de acordo com a</span>
+          <button type="button" class="linkish" data-go="privacidade" data-i18n="flegal2">política de privacidade e cookies</button>.
+        </p>
       </form>
 
       <!-- aviso de envio com sucesso, no lugar do formulário -->
@@ -489,6 +534,249 @@
         </button>
       </div>
     </section>
+  </main>
+</div>
+
+<!-- ==================== POLITICA DE PRIVACIDADE ====================
+     Não aparece na barra de topo nem no rodapé. Só se chega aqui pelo
+     aviso inicial e pelo link no fim do formulário de contacto. -->
+<div id="view-privacidade" hidden>
+  <main class="page wrap">
+    <div class="page-head">
+      <p class="label">Política de Privacidade</p>
+      <p class="lede" data-i18n="pvh">Como tratamos os seus dados.</p>
+      <p class="legal-date" data-i18n="pvdate">Última atualização: 27 de setembro de 2026</p>
+    </div>
+
+    <p class="legal-en" id="legal-en" hidden>
+      This privacy policy is available in Portuguese only. The Portuguese text below is the
+      authoritative version. For any question, write to
+      <a href="mailto:geral@adaptive.com.pt">geral@adaptive.com.pt</a>.
+    </p>
+
+    <div class="legal">
+      <p class="legal-intro">
+        A Adaptive Creative Studio respeita a privacidade dos seus clientes, potenciais clientes,
+        parceiros e visitantes do seu website. A presente Política de Privacidade explica de que
+        forma são recolhidos e tratados os dados pessoais quando visita o website
+        <a href="https://www.adaptive.com.pt">www.adaptive.com.pt</a>, entra em contacto com a
+        Adaptive Creative Studio ou utiliza os seus serviços. O tratamento de dados pessoais é
+        realizado de acordo com o Regulamento Geral sobre a Proteção de Dados (RGPD) e demais
+        legislação aplicável.
+      </p>
+
+      <section><h2><span class="n">01</span>Responsável pelo tratamento</h2>
+        <p>O responsável pelo tratamento dos dados pessoais é o titular da marca Adaptive Creative Studio, que atua comercialmente sob esta designação.</p>
+        <ul class="legal-meta">
+          <li><span>Marca</span> Adaptive Creative Studio</li>
+          <li><span>Localização</span> Viseu, Portugal</li>
+          <li><span>Email</span> <a href="mailto:geral@adaptive.com.pt">geral@adaptive.com.pt</a></li>
+          <li><span>Telefone</span> <a href="tel:+351960407495">+351 960 407 495</a></li>
+          <li><span>Website</span> <a href="https://www.adaptive.com.pt">www.adaptive.com.pt</a></li>
+        </ul>
+        <p>Para questões relacionadas com a proteção dos seus dados pessoais ou para exercer os seus direitos, poderá contactar-nos através do email <a href="mailto:geral@adaptive.com.pt">geral@adaptive.com.pt</a>.</p>
+      </section>
+
+      <section><h2><span class="n">02</span>Que dados pessoais podemos recolher</h2>
+        <p>Dependendo da forma como interage com a Adaptive Creative Studio, poderão ser recolhidos os seguintes dados:</p>
+        <ul>
+          <li>Nome;</li>
+          <li>Endereço de email;</li>
+          <li>Número de telefone;</li>
+          <li>Nome da empresa ou organização;</li>
+          <li>Cargo ou função profissional;</li>
+          <li>Dados fornecidos através de formulários de contacto;</li>
+          <li>Conteúdo das mensagens ou pedidos enviados;</li>
+          <li>Informação necessária à preparação de propostas ou prestação de serviços;</li>
+          <li>Dados técnicos relacionados com a utilização do website;</li>
+          <li>Endereço IP;</li>
+          <li>Tipo de dispositivo e navegador utilizado;</li>
+          <li>Informação relativa às preferências de cookies;</li>
+          <li>Outros dados que decida fornecer voluntariamente.</li>
+        </ul>
+        <p>Apenas serão recolhidos os dados adequados, pertinentes e necessários às finalidades para as quais são tratados.</p>
+      </section>
+
+      <section><h2><span class="n">03</span>Como recolhemos os seus dados</h2>
+        <p>Os dados pessoais podem ser recolhidos quando:</p>
+        <ul>
+          <li>Preenche um formulário disponível no website;</li>
+          <li>Solicita informações sobre os nossos serviços;</li>
+          <li>Solicita uma proposta ou orçamento;</li>
+          <li>Entra em contacto connosco através de email ou telefone;</li>
+          <li>Inicia uma relação comercial com a Adaptive Creative Studio;</li>
+          <li>Interage com campanhas ou conteúdos digitais;</li>
+          <li>Navega no nosso website, através de cookies ou tecnologias semelhantes, quando aplicável.</li>
+        </ul>
+        <p>Quando os dados forem recolhidos diretamente junto do titular, será disponibilizada a informação necessária relativamente ao respetivo tratamento.</p>
+      </section>
+
+      <section><h2><span class="n">04</span>Para que utilizamos os seus dados</h2>
+        <p>Os dados pessoais poderão ser tratados para as seguintes finalidades:</p>
+        <h3>4.1. Responder a pedidos de contacto</h3>
+        <p>Utilizamos os dados fornecidos para responder a perguntas, pedidos de informação, pedidos de orçamento e outras comunicações dirigidas à Adaptive Creative Studio.</p>
+        <h3>4.2. Preparação e prestação de serviços</h3>
+        <p>Quando existe uma relação comercial, os dados poderão ser utilizados para:</p>
+        <ul>
+          <li>Preparar propostas e orçamentos;</li>
+          <li>Comunicar com o cliente;</li>
+          <li>Gerir projetos;</li>
+          <li>Prestar os serviços contratados;</li>
+          <li>Emitir documentação comercial e fiscal;</li>
+          <li>Cumprir obrigações legais;</li>
+          <li>Gerir a relação profissional com o cliente.</li>
+        </ul>
+        <h3>4.3. Comunicações comerciais</h3>
+        <p>Quando exista fundamento legal para tal, poderemos utilizar os dados de contacto para enviar informações relacionadas com os nossos serviços, projetos, novidades ou conteúdos. Quando o envio de determinadas comunicações dependa de consentimento, este será solicitado previamente. O consentimento poderá ser retirado a qualquer momento.</p>
+        <h3>4.4. Funcionamento e melhoria do website</h3>
+        <p>Podemos tratar determinados dados técnicos para assegurar o funcionamento do website, detetar problemas, melhorar a experiência de utilização e compreender a forma como o website é utilizado. Os cookies e tecnologias que não sejam estritamente necessários serão utilizados de acordo com as preferências escolhidas pelo utilizador através do mecanismo de consentimento disponibilizado no website.</p>
+        <h3>4.5. Segurança</h3>
+        <p>Alguns dados técnicos poderão ser tratados para proteger o website, os seus sistemas e os utilizadores contra utilização abusiva, fraude, acessos não autorizados ou outros incidentes de segurança.</p>
+      </section>
+
+      <section><h2><span class="n">05</span>Fundamentos jurídicos</h2>
+        <p>O tratamento dos dados pessoais será realizado, conforme aplicável, com base numa das seguintes condições:</p>
+        <ul>
+          <li>Consentimento do titular dos dados;</li>
+          <li>Execução de um contrato ou realização de diligências pré-contratuais;</li>
+          <li>Cumprimento de obrigações legais;</li>
+          <li>Interesse legítimo, desde que este não prevaleça sobre os direitos e liberdades do titular dos dados.</li>
+        </ul>
+        <p>O consentimento não constitui necessariamente a base jurídica para todos os tratamentos. Por exemplo, quando o tratamento seja necessário para preparar ou executar um contrato, poderá ter como fundamento a execução desse contrato.</p>
+      </section>
+
+      <section><h2><span class="n">06</span>Cookies</h2>
+        <p>O website <a href="https://www.adaptive.com.pt">www.adaptive.com.pt</a> poderá utilizar cookies e tecnologias semelhantes. Os cookies poderão ser utilizados para:</p>
+        <ul>
+          <li>Assegurar o funcionamento do website;</li>
+          <li>Guardar determinadas preferências;</li>
+          <li>Obter estatísticas de utilização;</li>
+          <li>Analisar o desempenho do website;</li>
+          <li>Medir campanhas de publicidade e marketing;</li>
+          <li>Outras finalidades, quando devidamente autorizadas.</li>
+        </ul>
+        <p>Os cookies estritamente necessários ao funcionamento do website poderão ser utilizados sem consentimento quando legalmente permitido. Os cookies não essenciais serão utilizados de acordo com as preferências selecionadas pelo utilizador no mecanismo de consentimento disponibilizado no website. O utilizador poderá alterar ou retirar as suas preferências de consentimento através das opções disponibilizadas no website.</p>
+        <div class="legal-now">
+          <p><strong>O que este website utiliza, em concreto.</strong></p>
+          <p><strong>Necessários.</strong> Guardamos no armazenamento local do seu dispositivo o idioma que escolher e a sua escolha de cookies. Essa informação fica no seu dispositivo, não é enviada para nós e não serve para publicidade.</p>
+          <p><strong>Marketing, apenas com o seu consentimento.</strong> Se aceitar, carregamos o Pixel da Meta (Meta Platforms Ireland Limited). O Pixel regista a sua visita e o envio do formulário de contacto, e permite-nos medir o interesse pelo website e mostrar-lhe anúncios da Adaptive Creative Studio no Facebook e no Instagram. Para esse efeito são utilizados cookies da Meta, como o <code>_fbp</code>, e são comunicados à Meta dados como o endereço IP, o endereço da página visitada e informação sobre o dispositivo e o navegador. A Meta poderá tratar esses dados fora do Espaço Económico Europeu, ao abrigo dos mecanismos legais aplicáveis a transferências internacionais.</p>
+          <p><strong>Enquanto não aceitar, o Pixel não é carregado</strong> e nenhum dado é enviado para a Meta. Pode retirar o consentimento a qualquer momento, no fim desta página, e nessa altura o Pixel deixa de ser utilizado.</p>
+          <p><strong>Outros serviços.</strong> Os tipos de letra são carregados do Google Fonts, que recebe o endereço IP do visitante. O formulário de contacto é entregue pelo serviço Web3Forms. O alojamento é feito pela Cloudflare, que regista dados técnicos por motivos de segurança. Estes serviços são necessários ao funcionamento do website e não dependem do consentimento de marketing.</p>
+        </div>
+      </section>
+
+      <section><h2><span class="n">07</span>Prestadores de serviços e plataformas externas</h2>
+        <p>Para disponibilizar o website, gerir comunicações, prestar os nossos serviços e assegurar determinadas funcionalidades, poderemos recorrer a prestadores de serviços externos. Dependendo das ferramentas efetivamente utilizadas, estes poderão incluir:</p>
+        <ul>
+          <li>Serviços de alojamento e infraestrutura;</li>
+          <li>Serviços de email;</li>
+          <li>Plataformas de análise estatística;</li>
+          <li>Plataformas de gestão de contactos e CRM;</li>
+          <li>Ferramentas de automação;</li>
+          <li>Plataformas de publicidade digital;</li>
+          <li>Serviços de segurança;</li>
+          <li>Ferramentas utilizadas para formulários e comunicação.</li>
+        </ul>
+        <p>Quando estes prestadores tratem dados pessoais em nosso nome, serão selecionados e utilizados de acordo com as obrigações aplicáveis em matéria de proteção de dados.</p>
+      </section>
+
+      <section><h2><span class="n">08</span>Partilha de dados</h2>
+        <p>A Adaptive Creative Studio não vende dados pessoais. Os dados poderão ser comunicados a terceiros quando tal seja necessário para:</p>
+        <ul>
+          <li>Prestação dos serviços;</li>
+          <li>Funcionamento das plataformas utilizadas;</li>
+          <li>Cumprimento de obrigações legais;</li>
+          <li>Prestação de serviços profissionais, como contabilidade ou consultoria;</li>
+          <li>Proteção dos direitos e segurança da Adaptive Creative Studio ou de terceiros.</li>
+        </ul>
+        <p>O acesso aos dados será limitado ao necessário para cada finalidade.</p>
+      </section>
+
+      <section><h2><span class="n">09</span>Transferências internacionais</h2>
+        <p>Alguns dos serviços tecnológicos utilizados poderão envolver o tratamento de dados fora do Espaço Económico Europeu. Quando tal aconteça, serão procuradas as garantias adequadas previstas na legislação aplicável, incluindo, quando necessário, mecanismos legalmente reconhecidos para transferências internacionais de dados.</p>
+      </section>
+
+      <section><h2><span class="n">10</span>Conservação dos dados</h2>
+        <p>Os dados pessoais serão conservados apenas durante o período necessário para cumprir as finalidades para as quais foram recolhidos, salvo quando exista uma obrigação legal que determine um período de conservação superior. O período de conservação poderá variar consoante a finalidade. Por exemplo:</p>
+        <ul>
+          <li>Pedidos de contacto: durante o período necessário para responder ao pedido e acompanhar a comunicação;</li>
+          <li>Pedidos de orçamento: durante o período necessário para gerir o pedido e eventual relação comercial;</li>
+          <li>Dados relacionados com clientes e serviços: durante o período necessário à relação contratual e pelos períodos legalmente exigidos;</li>
+          <li>Comunicações comerciais: enquanto existir fundamento legal para o seu envio ou até à retirada do consentimento, quando aplicável;</li>
+          <li>Dados relacionados com cookies: de acordo com os períodos definidos para cada cookie.</li>
+        </ul>
+        <p>Quando os dados deixarem de ser necessários e não existir fundamento legal para a sua conservação, serão eliminados ou anonimizados.</p>
+      </section>
+
+      <section><h2><span class="n">11</span>Segurança</h2>
+        <p>A Adaptive Creative Studio procura aplicar medidas técnicas e organizativas adequadas para proteger os dados pessoais contra acesso não autorizado, perda, destruição, alteração ou outras formas de tratamento inadequado. Apesar das medidas adotadas, nenhum sistema de transmissão ou armazenamento eletrónico pode garantir segurança absoluta.</p>
+      </section>
+
+      <section><h2><span class="n">12</span>Direitos dos titulares dos dados</h2>
+        <p>Nos termos do RGPD, o titular dos dados poderá, quando aplicável, exercer os seguintes direitos:</p>
+        <ul>
+          <li>Direito de acesso aos seus dados pessoais;</li>
+          <li>Direito de retificação de dados inexatos ou incompletos;</li>
+          <li>Direito ao apagamento dos dados;</li>
+          <li>Direito à limitação do tratamento;</li>
+          <li>Direito de oposição ao tratamento;</li>
+          <li>Direito à portabilidade dos dados, quando aplicável;</li>
+          <li>Direito de retirar o consentimento, quando o tratamento tenha por base o consentimento;</li>
+          <li>Direito de não ficar sujeito a determinadas decisões baseadas exclusivamente em tratamento automatizado, nos termos legalmente aplicáveis.</li>
+        </ul>
+        <p>A extensão destes direitos depende do fundamento jurídico e das circunstâncias concretas do tratamento.</p>
+      </section>
+
+      <section><h2><span class="n">13</span>Exercício dos direitos</h2>
+        <p>Para exercer os seus direitos ou colocar qualquer questão relacionada com o tratamento dos seus dados pessoais, poderá contactar-nos através de:</p>
+        <ul class="legal-meta">
+          <li><span>Email</span> <a href="mailto:geral@adaptive.com.pt">geral@adaptive.com.pt</a></li>
+          <li><span>Telefone</span> <a href="tel:+351960407495">+351 960 407 495</a></li>
+        </ul>
+        <p>O pedido deverá conter informação suficiente para permitir a identificação do titular e a compreensão do direito que pretende exercer. O exercício dos direitos é, em regra, gratuito. O responsável pelo tratamento deverá responder ao pedido, em regra, no prazo de um mês, nos termos previstos no RGPD.</p>
+      </section>
+
+      <section><h2><span class="n">14</span>Direito de apresentar reclamação</h2>
+        <p>O titular dos dados tem o direito de apresentar uma reclamação junto da autoridade de controlo competente caso considere que o tratamento dos seus dados pessoais viola a legislação aplicável. Em Portugal, a autoridade de controlo é a:</p>
+        <p class="legal-address">
+          Comissão Nacional de Proteção de Dados (CNPD)<br>
+          Rua de São Bento, n.º 148, 3.º<br>
+          1200-821 Lisboa, Portugal<br>
+          <a href="https://www.cnpd.pt" target="_blank" rel="noopener noreferrer">www.cnpd.pt</a>
+        </p>
+        <p>Mais informações sobre os direitos dos titulares dos dados estão disponíveis no website da CNPD.</p>
+      </section>
+
+      <section><h2><span class="n">15</span>Dados de menores</h2>
+        <p>O website e os serviços da Adaptive Creative Studio não são especificamente dirigidos a menores. Não procuramos recolher intencionalmente dados pessoais de menores sem que exista uma base legal adequada para esse tratamento.</p>
+      </section>
+
+      <section><h2><span class="n">16</span>Websites de terceiros</h2>
+        <p>O website poderá conter ligações para websites, plataformas ou serviços de terceiros. A Adaptive Creative Studio não é responsável pelas políticas de privacidade, práticas de segurança ou conteúdos desses websites. Recomendamos que consulte as respetivas políticas de privacidade antes de fornecer dados pessoais a terceiros.</p>
+      </section>
+
+      <section><h2><span class="n">17</span>Alterações à Política de Privacidade</h2>
+        <p>A presente Política de Privacidade poderá ser atualizada sempre que necessário, nomeadamente devido a alterações legais, regulamentares, tecnológicas ou relacionadas com os nossos serviços. A versão mais recente estará sempre disponível em <a href="https://www.adaptive.com.pt">www.adaptive.com.pt</a>. A data da última atualização será indicada no início da presente Política.</p>
+      </section>
+
+      <section><h2><span class="n">18</span>Contactos</h2>
+        <ul class="legal-meta">
+          <li><span>Marca</span> Adaptive Creative Studio</li>
+          <li><span>Localização</span> Viseu, Portugal</li>
+          <li><span>Email</span> <a href="mailto:geral@adaptive.com.pt">geral@adaptive.com.pt</a></li>
+          <li><span>Telefone</span> <a href="tel:+351960407495">+351 960 407 495</a></li>
+          <li><span>Website</span> <a href="https://www.adaptive.com.pt">www.adaptive.com.pt</a></li>
+        </ul>
+        <p>Para questões relacionadas com privacidade e proteção de dados: <a href="mailto:geral@adaptive.com.pt">geral@adaptive.com.pt</a>.</p>
+      </section>
+    </div>
+
+    <div class="legal-foot">
+      <button type="button" class="arrowlink" id="priv-back">
+        <span class="arw" aria-hidden="true">←</span><span data-i18n="pvback">Voltar</span>
+      </button>
+      <button type="button" class="linkish" id="priv-reset" data-i18n="pvreset">Rever a minha escolha de cookies</button>
+    </div>
   </main>
 </div>
 
