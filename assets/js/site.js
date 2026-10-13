@@ -833,59 +833,26 @@
     ringEl.appendChild(s);
   });
 
-  /* ---------- o rodapé vai sendo descoberto por baixo do conteúdo ---------- */
+  /* ---------- o rodapé ----------
+     É um bloco normal no fim da página, com a altura do ecrã. Sobe junto
+     com o resto do conteúdo, como no telemóvel. Já foi preso ao fundo do
+     visor, mas isso obrigava o browser a repintar enquanto se rolava e
+     deixava os cantos por pintar durante uns instantes. */
   var megafoot = document.getElementById("megafoot");
-  var shell    = document.getElementById("shell");
-  var mfIn     = megafoot.querySelector(".megafoot-in");
-  var footH    = 0;
 
-  function sizeFooter() {
-    footH = megafoot.offsetHeight;
-    /* só se revela por baixo quando cabe no ecrã. Se for mais alto que o visor,
-       o topo, onde está o selo, ficava cortado acima do ecrã e nunca se via */
-    var fits = footH <= window.innerHeight + 1;
-    document.documentElement.classList.toggle("reveal-foot", fits);
-    /* reserva-se a altura do rodapé no fim do shell, para haver o que rolar */
-    shell.style.marginBottom = fits ? footH + "px" : "0px";
-    if (!fits) { mfIn.style.transform = ""; mfIn.style.opacity = ""; }
-  }
-
-  function footParallax() {
-    if (!footH || !document.documentElement.classList.contains("reveal-foot")) { return; }
-    var fromBottom = document.documentElement.scrollHeight
-                   - (window.scrollY + window.innerHeight);
-    var out = Math.max(0, Math.min(1, 1 - fromBottom / footH));
-    /* o conteúdo assenta à medida que o rodapé se descobre */
-    mfIn.style.transform = "translateY(" + ((1 - out) * 38).toFixed(1) + "px)";
-    mfIn.style.opacity = (0.2 + out * 0.8).toFixed(3);
-  }
-
-  if (!REDUCED) {
-    sizeFooter();
-    footParallax();
-    window.addEventListener("scroll", footParallax, { passive: true });
-    window.addEventListener("resize", function () { sizeFooter(); footParallax(); });
-    window.addEventListener("load", function () { sizeFooter(); footParallax(); });
-    /* a altura muda com as fontes, com o idioma e com a largura */
-    if ("ResizeObserver" in window) {
-      new ResizeObserver(function () { sizeFooter(); footParallax(); }).observe(megafoot);
-    }
-  }
-
-  /* ---------- no telemóvel a barra de topo sai quando o rodapé toma o ecrã ---------- */
-  var MOBILE = window.matchMedia("(max-width: 819px)");
+  /* ---------- a barra de topo sai quando o rodapé toma o ecrã ---------- */
+  var navEscondida = false;
   function navFootCheck() {
-    var hide = false;
-    if (MOBILE.matches) {
-      if (document.documentElement.classList.contains("reveal-foot")) {
-        var fromBottom = document.documentElement.scrollHeight
-                       - (window.scrollY + window.innerHeight);
-        hide = fromBottom < footH * 0.45;
-      } else {
-        hide = megafoot.getBoundingClientRect().top < window.innerHeight * 0.4;
-      }
+    /* quanto do rodapé já está à vista, de 0 a 1 */
+    var topo = megafoot.getBoundingClientRect().top;
+    var revelado = 1 - topo / window.innerHeight;
+    /* dois limites diferentes para esconder e para mostrar, senão a barra
+       tremia de cada vez que o scroll passasse em cima do mesmo ponto */
+    var hide = navEscondida ? revelado > 0.42 : revelado > 0.58;
+    if (hide !== navEscondida) {
+      navEscondida = hide;
+      nav.classList.toggle("is-hidden", hide);
     }
-    nav.classList.toggle("is-hidden", hide);
     if (hide && panel.classList.contains("is-open")) { setPanel(false); }
   }
   window.addEventListener("scroll", navFootCheck, { passive: true });

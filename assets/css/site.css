@@ -23,6 +23,10 @@
 
 * { box-sizing: border-box; }
 
+/* o fundo da tela é o escuro do rodapé. Assim, se o browser ainda não pintou
+   o rodapé enquanto se rola para ele, o que se vê é escuro e não um canto branco */
+html { background: #06060d; }
+
 body {
   margin: 0;
   background: var(--ground);
@@ -188,11 +192,17 @@ img { max-width: 100%; display: block; }
   border-bottom: 1px solid transparent;
   transition:
     background-color .4s ease, border-color .4s ease,
-    transform .5s cubic-bezier(.2,.8,.3,1), opacity .35s ease;
+    transform .62s cubic-bezier(.33,0,.18,1), opacity .42s ease;
+  will-change: transform;
 }
 /* no telemóvel, ao chegar ao rodapé, a barra sai e o rodapé fica com o ecrã todo */
 @media (max-width: 819px) {
-  .nav.is-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+}
+/* ao chegar ao rodapé, a barra de topo sai do caminho, em qualquer tamanho de ecrã */
+.nav.is-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 .nav-in {
   position: relative;
@@ -1731,14 +1741,14 @@ html.notice-open #view-contacto { padding-bottom: 220px; }
 /* ===============================================================
    RODAPE GRANDE
    =============================================================== */
-/* o conteúdo desliza por cima e o rodapé vai aparecendo por baixo */
+/* o rodapé é o último bloco da página e sobe com o conteúdo */
 #shell {
   position: relative;
   z-index: 1;
   background: var(--ground);
 }
 .megafoot {
-  position: relative;   /* sem javascript continua a ser um bloco normal no fim */
+  position: relative;
   isolation: isolate;
   overflow: hidden;
   background: #06060d;
@@ -1751,24 +1761,71 @@ html.notice-open #view-contacto { padding-bottom: 220px; }
   flex-direction: column;
 }
 .megafoot-in { flex: 1; display: flex; flex-direction: column; }
-.megafoot-bar { margin-top: auto; }
-/* o javascript liga a revelação e reserva a altura no fim do shell */
-html.reveal-foot .megafoot {
-  position: fixed;
-  inset-inline: 0;
-  bottom: 0;
-  z-index: 0;
+
+/* o logótipo ocupa o espaço que sobra entre as colunas e a linha final,
+   e cresce ou encolhe com ele em vez de ter um tamanho fixo */
+/* o logótipo segue a mesma grelha das colunas e ocupa a primeira,
+   por isso acaba exatamente onde começa a coluna do Estúdio */
+.megafoot-mark {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px 20px;
+  align-content: center;
+  padding-block: clamp(8px, 1.6vh, 36px);
 }
-.megafoot-in { will-change: transform; }
+.mark-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  grid-column: 1 / -1;   /* acompanha a coluna do contacto, que aqui é a largura toda */
+}
+.megafoot-mark img {
+  display: block;
+  width: 100%;
+  max-height: clamp(38px, 9vh, 110px);
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+}
+/* o logótipo em vidro, como o resto do site: a tinta é translúcida e
+   desfoca o brilho que passa por trás */
+.mark-vidro { position: absolute; inset: 0; pointer-events: none; }
+@supports ((-webkit-mask-image: url(a)) or (mask-image: url(a))) {
+  .megafoot-mark img { opacity: 0; }
+  .mark-vidro {
+    -webkit-mask: url(../img/wm-white-grande.png) left center / contain no-repeat;
+            mask: url(../img/wm-white-grande.png) left center / contain no-repeat;
+    background:
+      linear-gradient(118deg,
+        rgba(255,255,255,.99) 0%,
+        rgba(255,255,255,.78) 38%,
+        rgba(214,219,255,.86) 62%,
+        rgba(255,255,255,.95) 100%);
+    /* sem desfoque do fundo: dentro do rodapé fixo obrigava a repintar
+       enquanto se rolava. O gradiente sozinho já dá a leitura de vidro */
+    filter: drop-shadow(0 3px 14px rgba(123,130,255,.22));
+  }
+}
+@media (min-width: 1000px) {
+  .megafoot-mark { grid-template-columns: 1.3fr 1fr 1fr; gap: 26px clamp(40px, 6vw, 120px); }
+  .mark-wrap { grid-column: 1; }   /* acaba onde começa a coluna do Estúdio */
+}
+/* o rodapé é um bloco normal no fim da página: sobe com o conteúdo,
+   sem camadas fixas nem repinturas durante a rolagem */
 .megafoot-glow {
   position: absolute;
   inset: -34% -12%;
   z-index: -1;
+  will-change: transform;
+  /* gradientes mais abertos em vez de um desfoque de 48px em tempo real.
+     O desfoque obrigava o browser a recalcular quase 1800 por 1500 pixéis
+     enquanto se rolava, e era isso que deixava os cantos por pintar */
   background:
-    radial-gradient(36% 40% at 20% 26%, rgba(119,0,202,.55), transparent 68%),
-    radial-gradient(44% 46% at 76% 58%, rgba(49,56,196,.62), transparent 70%),
-    radial-gradient(30% 34% at 48% 92%, rgba(160,139,255,.3), transparent 72%);
-  filter: blur(48px);
+    radial-gradient(42% 48% at 20% 26%, rgba(119,0,202,.5) 0%, rgba(119,0,202,.22) 42%, transparent 78%),
+    radial-gradient(50% 54% at 76% 58%, rgba(49,56,196,.56) 0%, rgba(49,56,196,.24) 44%, transparent 80%),
+    radial-gradient(36% 40% at 48% 92%, rgba(160,139,255,.28) 0%, rgba(160,139,255,.12) 46%, transparent 82%);
   animation: footdrift 36s ease-in-out infinite alternate;
 }
 @keyframes footdrift {
