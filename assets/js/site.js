@@ -274,8 +274,12 @@
     lbstate: "Coming soon",
     lbh: "The side of Adaptive that researches what comes next.",
     lbl1: "What it is",
-    lbp1: "Adaptive Labs is Adaptive's research and technology arm. This is where we will explore artificial intelligence, automation and our own products, with the same care we bring to brands.",
+    lbp1: "Adaptive Guild is Adaptive's research and technology arm. This is where we will explore artificial intelligence, automation and our own products, with the same care we bring to brands.",
     lbp2: "It is still being built. It will open when there is the structure and the product to sustain it, and until then what we learn goes into Creative Studio projects first.",
+    lblg: "How the guild began",
+    lbpg1: "A guild was what craftsmen and masters called their associations in the Middle Ages. They came together to protect the trade, to set standards of quality nobody was allowed to drop, and to teach apprentices until they became masters themselves.",
+    lbpg2: "We chose the word because that is what we want to be. A place where knowledge is not locked inside one person, where the standard is defended by the people who work there, and where whoever arrives learns from whoever already knows the craft.",
+    lbpg3: "The trade changes, from the loom and the hammer to brand, code and artificial intelligence. The way of working is the same.",
     lbl2: "What we will offer", lbl2s: "Four areas in development",
     la1n: "Applied artificial intelligence",
     la1d: "AI tools and workflows designed for a brand's day to day, from content production to analysis.",
@@ -292,12 +296,11 @@
     ls2n: "First applications",
     ls2d: "Bringing the most solid solutions into concrete projects, with close follow up.",
     ls3n: "Opening",
-    ls3d: "Presenting Adaptive Labs as its own area, with defined services and products.",
+    ls3d: "Presenting Adaptive Guild as its own area, with defined services and products.",
     lbcta: "Want to know when it opens?",
     lbbtn: "Talk to us",
     lbback: "Back to the Studio",
-    mfrights: "© 2026 Adaptive Creative Studio. All rights reserved.",
-    labs: "Adaptive Labs, coming soon"
+    mfrights: "© 2026 Adaptive Creative Studio. All rights reserved."
   };
 
   var nodes = document.querySelectorAll("[data-i18n]");
@@ -409,7 +412,7 @@
     inicio:   document.getElementById("view-inicio"),
     estudio:  document.getElementById("view-estudio"),
     contacto: document.getElementById("view-contacto"),
-    labs:     document.getElementById("view-labs"),
+    guild:     document.getElementById("view-guild"),
     privacidade: document.getElementById("view-privacidade"),
     rd:          document.getElementById("view-rd")
   };
@@ -417,8 +420,8 @@
   var vistaInicial = true;
 
   function onScroll() {
-    nav.classList.toggle("on-dark", current === "labs");
-    if (current === "labs") { nav.classList.remove("is-solid"); return; }
+    nav.classList.toggle("on-dark", current === "guild");
+    if (current === "guild") { nav.classList.remove("is-solid"); return; }
     if (current !== "inicio") { nav.classList.add("is-solid"); return; }
     nav.classList.toggle("is-solid", window.scrollY > (cover.offsetHeight - 88));
   }
@@ -428,7 +431,7 @@
     Object.keys(views).forEach(function (k) { views[k].hidden = (k !== current); });
     /* o separador do browser diz em que casa estamos */
     document.title =
-      current === "labs"        ? "Adaptive Labs | Earn The Future" :
+      current === "guild"        ? "Adaptive Guild | Earn The Future" :
       current === "rd"          ? "RD Fisioterapia | Adaptive Creative Studio" :
       current === "privacidade" ? "Política de Privacidade | Adaptive Creative Studio" :
                                   "Adaptive Creative Studio | Earn The Future";
@@ -439,8 +442,8 @@
       if (b.dataset.nav === current) { b.setAttribute("aria-current", "page"); }
       else { b.removeAttribute("aria-current"); }
     });
-    /* o Labs aparece na barra, com a bola, só enquanto se está lá */
-    document.querySelector(".nav-labs").hidden = current !== "labs";
+    /* o Guild aparece na barra, com a bola, só enquanto se está lá */
+    document.querySelector(".nav-guild").hidden = current !== "guild";
     onScroll();
     /* o palco só tem dimensões quando a vista dele está visível */
     if (stage) { measureStage(); }
@@ -461,7 +464,7 @@
   function withLoader(target, anchor) {
     /* dentro da mesma página não vale a pena tapar o ecrã, é só um scroll */
     if (target === current || REDUCED) { show(target, anchor); return; }
-    loader.classList.toggle("dark", target === "labs");
+    loader.classList.toggle("dark", target === "guild");
     loader.classList.add("is-on");
     loaderRing.style.animation = "none";
     void loaderRing.offsetWidth;          /* reinicia o anel */
@@ -481,14 +484,16 @@
     });
   });
 
-  function route() {
+  /* o Guild já se chamou Labs: quem tiver o endereço antigo continua a chegar */
+  var apelidos = { labs: "guild" };
+  function lerHash() {
     var h = (location.hash || "").replace("#", "");
-    show(views[h] ? h : "inicio");
+    if (apelidos[h]) { h = apelidos[h]; }
+    return views[h] ? h : "inicio";
   }
-  window.addEventListener("hashchange", function () {
-    var h = (location.hash || "").replace("#", "");
-    withLoader(views[h] ? h : "inicio");
-  });
+
+  function route() { show(lerHash()); }
+  window.addEventListener("hashchange", function () { withLoader(lerHash()); });
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll);
 

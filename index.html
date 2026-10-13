@@ -51,8 +51,8 @@
     <nav class="nav-links">
       <button type="button" data-go="inicio" data-anchor="trabalhos" data-i18n="nav1">Trabalhos</button>
       <button type="button" data-go="estudio" data-nav="estudio" data-i18n="nav2">Estúdio</button>
-      <!-- só existe na barra enquanto se está no Labs -->
-      <button type="button" class="nav-labs" data-go="labs" data-nav="labs" hidden>Labs</button>
+      <!-- só existe na barra enquanto se está no Guild -->
+      <button type="button" class="nav-guild" data-go="guild" data-nav="guild" hidden>Guild</button>
     </nav>
     <div class="nav-right">
       <div class="seg" role="group" aria-label="Idioma">
@@ -309,9 +309,9 @@
             <h3>Adaptive Creative Studio</h3>
             <p data-i18n="e1d">Serviços criativos, estratégicos, digitais, de conteúdo e de campanha. É aqui que trabalhamos hoje.</p>
           </div>
-          <a class="eco-card glass-dark eco-link" href="#labs" data-go="labs">
+          <a class="eco-card glass-dark eco-link" href="#guild" data-go="guild">
             <span class="eco-state" data-i18n="e2s">Em breve</span>
-            <h3>Adaptive Labs</h3>
+            <h3>Adaptive Guild</h3>
             <p data-i18n="e2d">Investigação, inteligência artificial, automação e produtos próprios. Está a ser construído.</p>
             <span class="eco-more"><span data-i18n="e2more">Descobrir</span><span class="arw" aria-hidden="true">→</span></span>
           </a>
@@ -436,13 +436,13 @@
   </main>
 </div>
 
-<!-- ============================ LABS ============================ -->
-<div id="view-labs" hidden>
-  <div class="labs-glow" aria-hidden="true"></div>
-  <main class="page wrap labs">
+<!-- ============================ GUILD ============================ -->
+<div id="view-guild" hidden>
+  <div class="guild-glow" aria-hidden="true"></div>
+  <main class="page wrap guild">
     <div class="page-head">
-      <div class="labs-top">
-        <p class="label">Adaptive Labs</p>
+      <div class="guild-top">
+        <p class="label">Adaptive Guild</p>
         <span class="eco-state" data-i18n="lbstate">Em breve</span>
       </div>
       <p class="lede" data-i18n="lbh">O lado da Adaptive que investiga o que vem a seguir.</p>
@@ -453,7 +453,7 @@
         <p class="label" data-i18n="lbl1">O que é</p>
         <div>
           <p data-i18n="lbp1">
-            A Adaptive Labs é a estrutura de investigação e tecnologia da Adaptive. É aqui que vamos
+            A Adaptive Guild é a estrutura de investigação e tecnologia da Adaptive. É aqui que vamos
             explorar inteligência artificial, automação e produtos próprios, com o mesmo cuidado com
             que trabalhamos marcas.
           </p>
@@ -466,38 +466,60 @@
     </section>
 
     <section class="block">
+      <div class="block-grid">
+        <p class="label" data-i18n="lblg">Como surgiu a guilda</p>
+        <div>
+          <p data-i18n="lbpg1">
+            Guild, em português guilda, era o nome das associações de artesãos e mestres da Idade
+            Média. Juntavam-se para proteger o ofício, fixar padrões de qualidade que ninguém podia
+            baixar e ensinar os aprendizes até eles próprios chegarem a mestres.
+          </p>
+          <p data-i18n="lbpg2">
+            Escolhemos a palavra porque é isso que queremos ser. Um sítio onde o conhecimento não
+            fica fechado em ninguém, onde o nível é defendido por quem lá trabalha, e onde quem
+            chega aprende com quem já domina o ofício.
+          </p>
+          <p data-i18n="lbpg3">
+            Muda o ofício, do tear e do martelo para a marca, o código e a inteligência artificial.
+            A forma de estar é a mesma.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
       <div class="section-head">
         <p class="label" data-i18n="lbl2">O que vamos fornecer</p>
         <p class="label" data-i18n="lbl2s">Quatro áreas em desenvolvimento</p>
       </div>
-      <div class="labs-grid">
-        <div class="labs-card glass-dark">
+      <div class="guild-grid">
+        <div class="guild-card glass-dark">
           <span class="lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"></rect><path d="M8 10.5V7.4a4 4 0 0 1 8 0v3.1"></path><circle cx="12" cy="15.4" r="1.1" fill="currentColor" stroke="none"></circle></svg></span>
-          <span class="labs-num">01</span>
+          <span class="guild-num">01</span>
           <h3 data-i18n="la1n">Inteligência artificial aplicada</h3>
           <p data-i18n="la1d">Ferramentas e fluxos de IA pensados para o dia a dia de uma marca, da produção de conteúdo à análise.</p>
-          <span class="labs-state" data-i18n="ladev1">Em desenvolvimento</span>
+          <span class="guild-state" data-i18n="ladev1">Em desenvolvimento</span>
         </div>
-        <div class="labs-card glass-dark">
+        <div class="guild-card glass-dark">
           <span class="lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"></rect><path d="M8 10.5V7.4a4 4 0 0 1 8 0v3.1"></path><circle cx="12" cy="15.4" r="1.1" fill="currentColor" stroke="none"></circle></svg></span>
-          <span class="labs-num">02</span>
+          <span class="guild-num">02</span>
           <h3 data-i18n="la2n">Automação de processos</h3>
           <p data-i18n="la2d">Sistemas que tiram trabalho repetitivo das equipas e deixam tempo para o que exige critério.</p>
-          <span class="labs-state" data-i18n="ladev2">Em desenvolvimento</span>
+          <span class="guild-state" data-i18n="ladev2">Em desenvolvimento</span>
         </div>
-        <div class="labs-card glass-dark">
+        <div class="guild-card glass-dark">
           <span class="lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"></rect><path d="M8 10.5V7.4a4 4 0 0 1 8 0v3.1"></path><circle cx="12" cy="15.4" r="1.1" fill="currentColor" stroke="none"></circle></svg></span>
-          <span class="labs-num">03</span>
+          <span class="guild-num">03</span>
           <h3 data-i18n="la3n">Produtos próprios</h3>
           <p data-i18n="la3d">Ferramentas desenvolvidas pela Adaptive, nascidas dos problemas que encontramos nos projetos.</p>
-          <span class="labs-state" data-i18n="ladev3">Em desenvolvimento</span>
+          <span class="guild-state" data-i18n="ladev3">Em desenvolvimento</span>
         </div>
-        <div class="labs-card glass-dark">
+        <div class="guild-card glass-dark">
           <span class="lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"></rect><path d="M8 10.5V7.4a4 4 0 0 1 8 0v3.1"></path><circle cx="12" cy="15.4" r="1.1" fill="currentColor" stroke="none"></circle></svg></span>
-          <span class="labs-num">04</span>
+          <span class="guild-num">04</span>
           <h3 data-i18n="la4n">Investigação e novas soluções</h3>
           <p data-i18n="la4d">Testar tecnologia antes de ela chegar ao mercado, para saber o que vale a pena e o que não vale.</p>
-          <span class="labs-state" data-i18n="ladev4">Em desenvolvimento</span>
+          <span class="guild-state" data-i18n="ladev4">Em desenvolvimento</span>
         </div>
       </div>
     </section>
@@ -507,7 +529,7 @@
         <p class="label" data-i18n="lbl3">O que está para vir</p>
         <p class="label" data-i18n="lbl3s">Por esta ordem</p>
       </div>
-      <div class="labs-steps">
+      <div class="guild-steps">
         <div class="how-step">
           <span class="how-num">01</span>
           <h3 data-i18n="ls1n">Investigação</h3>
@@ -521,14 +543,14 @@
         <div class="how-step">
           <span class="how-num">03</span>
           <h3 data-i18n="ls3n">Abertura</h3>
-          <p data-i18n="ls3d">Apresentar a Adaptive Labs como área própria, com serviços e produtos definidos.</p>
+          <p data-i18n="ls3d">Apresentar a Adaptive Guild como área própria, com serviços e produtos definidos.</p>
         </div>
       </div>
     </section>
 
-    <section class="block no-rule labs-end">
+    <section class="block no-rule guild-end">
       <p class="lede" data-i18n="lbcta">Quer saber quando abre?</p>
-      <div class="labs-actions">
+      <div class="guild-actions">
         <button class="btn-dark" type="button" data-go="contacto" data-i18n="lbbtn">Falar connosco</button>
         <button class="arrowlink" type="button" data-go="estudio">
           <span class="arw" aria-hidden="true">←</span><span data-i18n="lbback">Voltar ao Estúdio</span>
@@ -936,7 +958,7 @@
       <div class="mfcol">
         <p class="mflabel" data-i18n="mfc3">[ Ecossistema ]</p>
         <span class="mfstatic">Adaptive Creative Studio</span>
-        <button type="button" class="mfsoon" data-go="labs">Adaptive Labs <em data-i18n="mfsoon">em breve</em></button>
+        <button type="button" class="mfsoon" data-go="guild">Adaptive Guild <em data-i18n="mfsoon">em breve</em></button>
       </div>
 
       <div class="mfcol">
