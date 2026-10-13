@@ -1744,7 +1744,14 @@ html.notice-open #view-contacto { padding-bottom: 220px; }
   background: #06060d;
   color: #fff;
   padding-block: clamp(64px, 8vw, 104px) 0;
+  /* ocupa o ecrã todo, para não ficar meio rodapé e meio página por cima */
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
 }
+.megafoot-in { flex: 1; display: flex; flex-direction: column; }
+.megafoot-bar { margin-top: auto; }
 /* o javascript liga a revelação e reserva a altura no fim do shell */
 html.reveal-foot .megafoot {
   position: fixed;
@@ -1822,15 +1829,18 @@ html.reveal-foot .megafoot {
 .mfphone:hover { color: #fff !important; }
 .direct-phone { padding-top: 2px !important; color: var(--muted) !important; }
 .direct-phone:hover { color: var(--brand) !important; }
-@media (max-width: 819px) {
-  .megafoot {
-    min-height: 100vh;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-  }
-  .megafoot-in { flex: 1; display: flex; flex-direction: column; }
-  .megafoot-bar { margin-top: auto; }
+/* o rodapé a ecrã inteiro é agora a regra, em qualquer tamanho */
+
+/* com o ecrã todo há espaço para o selo e a marca respirarem.
+   Os espaçamentos passam a depender da ALTURA do ecrã, para o rodapé
+   caber sempre no visor e a linha final nunca ficar cortada */
+@media (min-width: 820px) {
+  .megafoot { padding-top: clamp(38px, 6.5vh, 96px); }
+  .megafoot-head { padding-bottom: clamp(8px, 1.6vh, 26px); }
+  .megafoot-cols { padding-block: clamp(24px, 4.6vh, 80px) clamp(18px, 3vh, 52px); }
+  .badge { width: clamp(104px, 14vh, 148px); height: clamp(104px, 14vh, 148px); }
+  .badge img { width: clamp(38px, 5vh, 52px); }
+  .mfmark { width: clamp(150px, 19vh, 186px); margin-top: clamp(12px, 2vh, 24px); }
 }
 @media (max-width: 599px) {
   .megafoot { padding-top: 44px; }
