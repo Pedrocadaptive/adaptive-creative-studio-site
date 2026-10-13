@@ -796,31 +796,116 @@
     }, { rootMargin: "-38% 0px -48% 0px" }).observe(document.getElementById("trabalhos"));
   }
 
-  /* ---------- vídeos: só carregam e rodam enquanto estão no ecrã ---------- */
+  /* ---------- vídeos: só começam quando se chega à secção ----------
+     O ficheiro só é pedido na primeira vez que o vídeo entra no ecrã, e
+     a vigia só liga depois da animação de entrada, senão os vídeos
+     arrancavam por trás dela, antes de se chegar aos trabalhos.
+     No telemóvel o primeiro play() é muitas vezes recusado, porque o
+     ficheiro ainda não tem imagem ou porque o browser quer poupar
+     bateria. Por isso insistimos algumas vezes e, em último caso, ao
+     primeiro toque na página. */
   var videos = document.querySelectorAll("[data-video]");
+  var porRodar = [];
+  var naFila = [];
+  var videosArmados = false;
+
+  function tentarRodar(v, tentativa) {
+    if (v.dataset.quer !== "1") { return; }
+    var p = v.play();
+    if (!p || !p.catch) { return; }
+    p.catch(function () {
+      if (v.dataset.quer !== "1") { return; }
+      /* três insistências, cada vez mais espaçadas, dão tempo ao ficheiro
+         de chegar e ao browser de mudar de ideias */
+      var n = tentativa || 0;
+      if (n < 3) {
+        setTimeout(function () { tentarRodar(v, n + 1); }, 350 + n * 600);
+      } else if (porRodar.indexOf(v) < 0) {
+        porRodar.push(v);
+      }
+    });
+  }
 
   function ligarVideo(v) {
-    if (!v.getAttribute("src")) {
-      v.autoplay = true;                 /* assim arranca assim que o ficheiro chega */
-      v.setAttribute("src", v.dataset.src);
+    /* durante a animação de entrada ninguém carrega nada: os vídeos ficam
+       à espera, para começarem mesmo quando se chega à secção */
+    if (!videosArmados) {
+      if (naFila.indexOf(v) < 0) { naFila.push(v); }
+      return;
     }
-    var p = v.play();
-    if (p && p.catch) { p.catch(function () {}); }   /* se o browser recusar, fica a imagem de espera */
+    /* sem som e dentro da página: é a única forma de o telemóvel deixar
+       rodar sozinho, e tem de estar posto antes de o ficheiro chegar */
+    v.muted = true;
+    v.defaultMuted = true;
+    v.setAttribute("muted", "");
+    v.playsInline = true;
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "");
+
+    if (!v.getAttribute("src")) {
+      v.preload = "auto";
+      v.autoplay = true;
+      v.setAttribute("autoplay", "");
+      v.addEventListener("loadeddata", function () {
+        if (v.paused) { tentarRodar(v); }
+      });
+      v.setAttribute("src", v.dataset.src);
+      v.load();
+    }
+    v.dataset.quer = "1";
+    tentarRodar(v);
   }
+
+  function pararVideo(v) {
+    v.dataset.quer = "";
+    var f = naFila.indexOf(v);
+    if (f >= 0) { naFila.splice(f, 1); }
+    var i = porRodar.indexOf(v);
+    if (i >= 0) { porRodar.splice(i, 1); }
+    if (!v.paused) { v.pause(); }
+  }
+
+  /* última rede de segurança: ao primeiro toque ou tecla, os vídeos que
+     estão à vista e ficaram parados arrancam */
+  function destravar() {
+    porRodar.splice(0).forEach(tentarRodar);
+  }
+  ["pointerdown", "touchstart", "keydown"].forEach(function (ev) {
+    window.addEventListener(ev, destravar, { passive: true });
+  });
+  /* ao voltar ao separador, insistir nos que ficaram parados */
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) { destravar(); }
+  });
+
+  /* ao mudar de página a vigia pode não voltar a disparar para o que já
+     está à vista, por isso a rota avisa aqui. Antes da animação de
+     entrada acabar não se liga nada */
   window.__ligarVideosDaVista = function (raiz) {
-    (raiz || document).querySelectorAll("[data-video]").forEach(ligarVideo);
+    if (!videosArmados) { return; }
+    (raiz || document).querySelectorAll("[data-video]").forEach(function (v) {
+      if (v.getBoundingClientRect().top < window.innerHeight) { ligarVideo(v); }
+    });
   };
 
+  /* a vigia fica logo a postos, senão há ecrãs em que nunca chega a
+     disparar para o que já está à vista */
   if (videos.length && "IntersectionObserver" in window) {
     var vio = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { ligarVideo(e.target); }
-        else if (!e.target.paused) { e.target.pause(); }
+        else { pararVideo(e.target); }
       });
     }, { threshold: 0.2 });
     videos.forEach(function (v) { vio.observe(v); });
-  } else {
-    videos.forEach(ligarVideo);
+  }
+
+  /* chamada quando a animação de entrada sai do ecrã */
+  function vigiarVideos() {
+    videosArmados = true;
+    if (!videos.length) { return; }
+    if (!("IntersectionObserver" in window)) { videos.forEach(ligarVideo); return; }
+    naFila.splice(0).forEach(ligarVideo);
   }
 
   /* ---------- selo do rodapé: o texto é montado letra a letra à volta do círculo ---------- */
@@ -974,6 +1059,11 @@
   route();
 
   /* a classe boot sai depois da primeira entrada, para o ecrã ficar livre
-     de a reutilizar nas mudanças de página */
-  setTimeout(function () { loader.classList.remove("boot"); }, 2700);
+     de a reutilizar nas mudanças de página. Só então é que os vídeos
+     passam a vigiar o ecrã: assim começam mesmo quando se chega aos
+     trabalhos, e não por trás da animação de entrada */
+  setTimeout(function () {
+    loader.classList.remove("boot");
+    vigiarVideos();
+  }, 2700);
 })();
