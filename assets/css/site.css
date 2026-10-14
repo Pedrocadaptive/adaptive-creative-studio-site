@@ -727,22 +727,7 @@ img { max-width: 100%; display: block; }
   .marquee { display: none; }
 }
 
-/* no telemovel ficam só as peças, paradas nos cantos, e os cards passam nas filas */
-@media (max-width: 899px) {
-  .chip-field { display: block; position: absolute; inset: 0; pointer-events: none; }
-  .chip-field .chip { display: none; }
-  .tile { animation: tilebob var(--tdur, 12s) ease-in-out var(--tdelay, 0s) infinite alternate; }
-  .tile:nth-of-type(1) { left: -2%;  top: 4%;   width: 92px;  height: 92px; }
-  .tile:nth-of-type(2) { right: -3%; top: 0%;   width: 78px;  height: 104px; }
-  .tile:nth-of-type(3) { left: 6%;   bottom: 2%; width: 64px; height: 64px; }
-  .tile:nth-of-type(4) { right: 2%;  bottom: 6%; width: 96px; height: 72px; }
-  .tile:nth-of-type(5) { display: none; }
-}
-@keyframes tilebob {
-  from { transform: translate3d(0, 0, 0) rotate(var(--trot, 0deg)); }
-  to   { transform: translate3d(6px, -14px, 0) rotate(calc(var(--trot, 0deg) * -1)); }
-}
-
+/* no telemóvel o campo de órbita sai e fica só a fita */
 @media (max-width: 899px) {
   .chip-field { display: none; }
   .marquee { position: relative; width: 100vw; margin-inline: calc(50% - 50vw); overflow: hidden; display: grid; gap: 12px; }
@@ -754,8 +739,12 @@ img { max-width: 100%; display: block; }
   .marquee .tile {
     position: relative;
     flex: none;
+    display: block;
     left: auto;
     top: auto;
+    right: auto;
+    bottom: auto;
+    z-index: auto;
     transform: none !important;
     opacity: 1 !important;
     clip-path: none !important;

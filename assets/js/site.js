@@ -156,9 +156,13 @@
     return d;
   }
 
+  /* na fita entram só as fotografias: as peças de luz azul e roxa viviam
+     da órbita, e numa fila a par dos cards só faziam confusão */
+  var FOTOS = TILES.filter(function (t) { return t.v === 2 || t.v === 3 || t.v === 5; });
+
   document.querySelectorAll("[data-clone]").forEach(function (row, r) {
     var order = SERVICES.map(function (s, i) { return { s: s, i: i }; });
-    var pecas = TILES.slice();
+    var pecas = FOTOS.slice();
     if (r === 1) { order.reverse(); pecas.reverse(); }
     var p = 0;
     order.concat(order).forEach(function (o, k) {
@@ -920,7 +924,9 @@
   /* última rede de segurança: ao primeiro toque ou tecla, os vídeos que
      estão à vista e ficaram parados arrancam */
   function destravar() {
-    porRodar.splice(0).forEach(tentarRodar);
+    /* tentativa 3 quer dizer: pede uma vez e, se for recusado, volta já
+       para a fila em vez de abrir uma cadeia nova de relógios */
+    porRodar.splice(0).forEach(function (v) { tentarRodar(v, 3); });
   }
   ["pointerdown", "touchstart", "keydown"].forEach(function (ev) {
     window.addEventListener(ev, destravar, { passive: true });
@@ -929,6 +935,16 @@
   document.addEventListener("visibilitychange", function () {
     if (!document.hidden) { destravar(); }
   });
+  /* e a cada rolagem: no telemóvel há recusas que só levantam mais tarde,
+     e sem isto o vídeo ficava preso no primeiro fotograma */
+  var ultimaTentativa = 0;
+  window.addEventListener("scroll", function () {
+    if (!porRodar.length) { return; }
+    var agora = Date.now();
+    if (agora - ultimaTentativa < 500) { return; }
+    ultimaTentativa = agora;
+    destravar();
+  }, { passive: true });
 
   /* ao mudar de página a vigia pode não voltar a disparar para o que já
      está à vista, por isso a rota avisa aqui. Antes da animação de
