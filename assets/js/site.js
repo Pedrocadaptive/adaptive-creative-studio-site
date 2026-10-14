@@ -92,12 +92,19 @@
 
   /* peças visuais nossas, abstratas, nas cores da marca */
   /* as peças ficam mais perto, os cards de texto afastam-se para libertar o título */
+  /* peças visuais nossas, nas cores da marca e em fotografia */
+  /* cada uma tem a sua elipse, o seu ritmo e o seu ponto de partida: é
+     daí que vem a desordem natural da órbita */
   var TILES = [
     { v: 1, w: 176, h: 132, rot: -4,   rx: .56, ry: .72, per: 104, ph: 0.6 },
     { v: 2, w: 138, h: 176, rot:  5,   rx: .78, ry: .50, per: 128, ph: 2.4 },
     { v: 3, w: 100, h: 100, rot: -7,   rx: .82, ry: .66, per:  92, ph: 4.1 },
     { v: 4, w: 124, h: 124, rot:  6,   rx: .50, ry: .80, per: 116, ph: 5.3 },
-    { v: 5, w: 160, h: 118, rot: -3,   rx: .70, ry: .76, per:  98, ph: 3.2 }
+    { v: 5, w: 160, h: 118, rot: -3,   rx: .70, ry: .76, per:  98, ph: 3.2 },
+    { v: 6, w: 170, h:  96, rot:  4,   rx: .64, ry: .84, per: 112, ph: 1.5 },
+    { v: 7, w: 112, h: 112, rot: -6,   rx: .86, ry: .58, per:  88, ph: 2.9 },
+    { v: 8, w: 180, h: 101, rot: -2,   rx: .74, ry: .70, per: 122, ph: 4.8 },
+    { v: 9, w: 120, h: 120, rot:  7,   rx: .58, ry: .88, per:  96, ph: 5.9 }
   ];
 
   var ORBITS = [
@@ -137,10 +144,28 @@
     orbiters.push(item);
   });
 
+  /* no telemóvel não há órbita: os cards de serviços e as fotografias
+     passam numa fita, intercalados, com a mesma andadura */
+  var ALTURA_FITA = 92;
+  function pecaDaFita(t) {
+    var d = document.createElement("div");
+    d.className = "tile v" + t.v + " shown";
+    d.style.height = ALTURA_FITA + "px";
+    d.style.width = Math.round(t.w / t.h * ALTURA_FITA) + "px";
+    d.setAttribute("aria-hidden", "true");
+    return d;
+  }
+
   document.querySelectorAll("[data-clone]").forEach(function (row, r) {
     var order = SERVICES.map(function (s, i) { return { s: s, i: i }; });
-    if (r === 1) { order.reverse(); }
-    order.concat(order).forEach(function (o) { row.appendChild(makeChip(o.s, o.i, false)); });
+    var pecas = TILES.slice();
+    if (r === 1) { order.reverse(); pecas.reverse(); }
+    var p = 0;
+    order.concat(order).forEach(function (o, k) {
+      row.appendChild(makeChip(o.s, o.i, false));
+      /* uma fotografia a cada dois cards, para a fita respirar */
+      if (k % 2 === 1) { row.appendChild(pecaDaFita(pecas[(p++) % pecas.length])); }
+    });
   });
 
   /* ---------- lista de servicos, pagina estudio ---------- */
@@ -274,12 +299,8 @@
     lbstate: "Coming soon",
     lbh: "The side of Adaptive that researches what comes next.",
     lbl1: "What it is",
-    lbp1: "Adaptive Guild is Adaptive's research and technology arm. This is where we will explore artificial intelligence, automation and our own products, with the same care we bring to brands.",
+    lbp1: "Adaptive Labs is Adaptive's research and technology arm. This is where we will explore artificial intelligence, automation and our own products, with the same care we bring to brands.",
     lbp2: "It is still being built. It will open when there is the structure and the product to sustain it, and until then what we learn goes into Creative Studio projects first.",
-    lblg: "How the guild began",
-    lbpg1: "A guild was what craftsmen and masters called their associations in the Middle Ages. They came together to protect the trade, to set standards of quality nobody was allowed to drop, and to teach apprentices until they became masters themselves.",
-    lbpg2: "We chose the word because that is what we want to be. A place where knowledge is not locked inside one person, where the standard is defended by the people who work there, and where whoever arrives learns from whoever already knows the craft.",
-    lbpg3: "The trade changes, from the loom and the hammer to brand, code and artificial intelligence. The way of working is the same.",
     lbl2: "What we will offer", lbl2s: "Four areas in development",
     la1n: "Applied artificial intelligence",
     la1d: "AI tools and workflows designed for a brand's day to day, from content production to analysis.",
@@ -296,7 +317,7 @@
     ls2n: "First applications",
     ls2d: "Bringing the most solid solutions into concrete projects, with close follow up.",
     ls3n: "Opening",
-    ls3d: "Presenting Adaptive Guild as its own area, with defined services and products.",
+    ls3d: "Presenting Adaptive Labs as its own area, with defined services and products.",
     lbcta: "Want to know when it opens?",
     lbbtn: "Talk to us",
     lbback: "Back to the Studio",
@@ -412,7 +433,7 @@
     inicio:   document.getElementById("view-inicio"),
     estudio:  document.getElementById("view-estudio"),
     contacto: document.getElementById("view-contacto"),
-    guild:     document.getElementById("view-guild"),
+    labs:     document.getElementById("view-labs"),
     privacidade: document.getElementById("view-privacidade"),
     rd:          document.getElementById("view-rd")
   };
@@ -420,8 +441,8 @@
   var vistaInicial = true;
 
   function onScroll() {
-    nav.classList.toggle("on-dark", current === "guild");
-    if (current === "guild") { nav.classList.remove("is-solid"); return; }
+    nav.classList.toggle("on-dark", current === "labs");
+    if (current === "labs") { nav.classList.remove("is-solid"); return; }
     if (current !== "inicio") { nav.classList.add("is-solid"); return; }
     nav.classList.toggle("is-solid", window.scrollY > (cover.offsetHeight - 88));
   }
@@ -431,7 +452,7 @@
     Object.keys(views).forEach(function (k) { views[k].hidden = (k !== current); });
     /* o separador do browser diz em que casa estamos */
     document.title =
-      current === "guild"        ? "Adaptive Guild | Earn The Future" :
+      current === "labs"        ? "Adaptive Labs | Earn The Future" :
       current === "rd"          ? "RD Fisioterapia | Adaptive Creative Studio" :
       current === "privacidade" ? "Política de Privacidade | Adaptive Creative Studio" :
                                   "Adaptive Creative Studio | Earn The Future";
@@ -442,8 +463,8 @@
       if (b.dataset.nav === current) { b.setAttribute("aria-current", "page"); }
       else { b.removeAttribute("aria-current"); }
     });
-    /* o Guild aparece na barra, com a bola, só enquanto se está lá */
-    document.querySelector(".nav-guild").hidden = current !== "guild";
+    /* o Labs aparece na barra, com a bola, só enquanto se está lá */
+    document.querySelector(".nav-labs").hidden = current !== "labs";
     onScroll();
     /* o palco só tem dimensões quando a vista dele está visível */
     if (stage) { measureStage(); }
@@ -464,7 +485,7 @@
   function withLoader(target, anchor) {
     /* dentro da mesma página não vale a pena tapar o ecrã, é só um scroll */
     if (target === current || REDUCED) { show(target, anchor); return; }
-    loader.classList.toggle("dark", target === "guild");
+    loader.classList.toggle("dark", target === "labs");
     loader.classList.add("is-on");
     loaderRing.style.animation = "none";
     void loaderRing.offsetWidth;          /* reinicia o anel */
@@ -484,8 +505,9 @@
     });
   });
 
-  /* o Guild já se chamou Labs: quem tiver o endereço antigo continua a chegar */
-  var apelidos = { labs: "guild" };
+  /* o Labs chamou-se Adaptive Guild durante uns dias: quem tiver esse
+     endereço continua a chegar à mesma página */
+  var apelidos = { guild: "labs" };
   function lerHash() {
     var h = (location.hash || "").replace("#", "");
     if (apelidos[h]) { h = apelidos[h]; }
@@ -539,6 +561,23 @@
     });
   }
 
+  /* ---------- a luz da marca fica centrada na frase ----------
+     O palco tem mais coisas por baixo do título, por isso o meio do
+     palco não é o meio da frase. Sem isto a luz ficava por baixo dela,
+     e no telemóvel a frase em vidro branco deixava de se ler. */
+  var luz = stage.querySelector(".stage-luz");
+  function centrarLuz() {
+    if (!luz) { return; }
+    var sb = stage.getBoundingClientRect();
+    var wb = stage.querySelector(".stage-word").getBoundingClientRect();
+    if (!wb.height) { return; }
+    luz.style.top = Math.round(wb.top - sb.top + wb.height / 2) + "px";
+  }
+  centrarLuz();
+  window.addEventListener("resize", centrarLuz);
+  window.addEventListener("load", centrarLuz);
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(centrarLuz); }
+
   /* ---------- órbita lenta à volta do EARN THE FUTURE ---------- */
   var orbitRunning = false, orbitRaf = 0, orbitLast = 0;
   var halfW = 0, halfH = 0, orbitOX = 0, orbitOY = 0, orbitScaleX = 1;
@@ -563,6 +602,14 @@
     }
     var room = window.innerWidth / 2 - Math.abs(orbitOX) - maxHalfChip - 18;
     orbitScaleX = (maxRx && halfW) ? Math.max(.4, Math.min(1, room / (maxRx * halfW))) : 1;
+
+    /* tamanhos guardados uma vez, para a separação não ter de os ir
+       buscar ao desenho em cada frame */
+    for (var k = 0; k < orbiters.length; k++) {
+      orbiters[k].w = orbiters[k].el.offsetWidth;
+      orbiters[k].h = orbiters[k].el.offsetHeight;
+      orbiters[k].peca = orbiters[k].el.classList.contains("tile");
+    }
   }
 
   function orbitFrame(now) {
@@ -576,8 +623,8 @@
       var y = orbitOY + Math.sin(a) * o.ry * halfH
             + Math.sin(o.ph + (o.t / o.bobP) * Math.PI * 2) * o.bobA;
       o.el.style.transform =
-        "translate3d(" + (x - o.el.offsetWidth / 2).toFixed(1) + "px," +
-                         (y - o.el.offsetHeight / 2).toFixed(1) + "px,0)" +
+        "translate3d(" + (x - o.w / 2).toFixed(1) + "px," +
+                         (y - o.h / 2).toFixed(1) + "px,0)" +
         (o.rot ? " rotate(" + o.rot + "deg)" : "");
     }
     orbitRaf = requestAnimationFrame(orbitFrame);
@@ -934,8 +981,9 @@
   var navEscondida = false;
   function navFootCheck() {
     /* quanto do rodapé já está à vista, de 0 a 1 */
-    var topo = megafoot.getBoundingClientRect().top;
-    var revelado = 1 - topo / window.innerHeight;
+    var revelado = window.__revelado
+      ? window.__revelado()
+      : 1 - megafoot.getBoundingClientRect().top / window.innerHeight;
     /* dois limites diferentes para esconder e para mostrar, senão a barra
        tremia de cada vez que o scroll passasse em cima do mesmo ponto */
     var hide = navEscondida ? revelado > 0.42 : revelado > 0.58;
@@ -1071,4 +1119,299 @@
     loader.classList.remove("boot");
     vigiarVideos();
   }, 2700);
+})();
+
+/* ===============================================================
+   EXPERIÊNCIA: rodapé sempre lá, o site sobe por cima
+   Vive à parte do resto, para se poder ligar e desligar num sítio só.
+   =============================================================== */
+(function () {
+  var raiz = document.documentElement;
+  var pe   = document.getElementById("megafoot");
+  var casa = document.getElementById("shell");
+  var alturaPe = 0;
+
+  function medir() {
+    alturaPe = pe.offsetHeight;
+    casa.style.marginBottom = raiz.classList.contains("rodape-fixo") ? alturaPe + "px" : "";
+  }
+
+  window.__rodapeFixo = function (ligar) {
+    raiz.classList.toggle("rodape-fixo", !!ligar);
+    if (!ligar) { casa.style.marginBottom = ""; return; }
+    medir();
+  };
+
+  window.addEventListener("resize", medir);
+  if ("ResizeObserver" in window) { new ResizeObserver(medir).observe(pe); }
+
+  /* quanto do rodapé já está à vista, de 0 a 1 */
+  window.__revelado = function () {
+    if (!raiz.classList.contains("rodape-fixo")) {
+      return 1 - pe.getBoundingClientRect().top / window.innerHeight;
+    }
+    var fim = document.documentElement.scrollHeight - window.innerHeight;
+    return Math.max(0, Math.min(1, (window.scrollY - (fim - alturaPe)) / alturaPe));
+  };
+})();
+
+/* ===============================================================
+   EXPERIÊNCIA: os pontos do nome por revelar.
+   Andam em onda, bem separados uns dos outros, juntam-se no símbolo da
+   Adaptive e voltam à onda. No símbolo assentam no EIXO do traço, não
+   no contorno: o contorno fazia duas linhas coladas e borrava o desenho.
+   =============================================================== */
+(function () {
+  var L = 64, A = 26;          /* tela, em pixéis de página */
+  var ALTO = 20;               /* altura do símbolo: dez por cento acima
+                                  da linha do ano, que mede 18px */
+  var FOLGA = 1.2;             /* distância mínima entre pontos do símbolo.
+                                  Tem de ser MENOR do que o espaço entre os
+                                  três anéis, senão um deles desaparece */
+  var GRANDES = 7;             /* quantos pontos na onda */
+  var R_GRANDE = 1.5;          /* o ponto da onda, como os do site */
+  var R_PEQUENO = 0.55;        /* o caco em que ele se parte */
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var alvo = null, telas = [], pedido = null;
+  /* as duas cores dos pontos, com a transparência do card por revelar */
+  var CORES = [
+    { marca: false, rgb: "rgb(11,11,20)",  alfa: 0.3 },
+    { marca: true,  rgb: "rgb(49,56,196)", alfa: 0.42 }
+  ];
+  /* folha de rascunho onde cada cor é achatada antes de entrar na tela */
+  var folha = null, bctx = null;
+  function abrirFolha() {
+    if (folha) { return; }
+    folha = document.createElement("canvas");
+    folha.width = Math.round(L * DPR);
+    folha.height = Math.round(A * DPR);
+    bctx = folha.getContext("2d");
+    bctx.scale(DPR, DPR);
+  }
+
+  /* ---- ler o símbolo e tirar pontos ao longo do meio de cada traço ---- */
+  function lerSimbolo(pronto) {
+    var img = new Image();
+    img.onload = function () {
+      var H = 400;   /* lê em grande: é a única forma de os intervalos
+                        entre os três anéis não se perderem */
+      var W = Math.max(1, Math.round(img.width * (H / img.height)));
+      var c = document.createElement("canvas");
+      c.width = W; c.height = H;
+      var x = c.getContext("2d");
+      x.drawImage(img, 0, 0, W, H);
+      var d = x.getImageData(0, 0, W, H).data;
+      function tintaEm(i, j) { return tinta(i, j); }
+      function tinta(i, j) {
+        if (i < 0 || j < 0 || i >= W || j >= H) { return false; }
+        var q = (j * W + i) * 4;
+        return d[q + 3] > 110 && d[q] < 140;
+      }
+      /* ---- o meio do traço, por distância ao bordo ----
+         Para cada pixel com tinta calcula-se a que distância está do
+         branco mais próximo. O valor é maior no meio do traço e vai a
+         zero nas margens. Ficamos com a crista, que é o eixo do traço,
+         e sai igual em qualquer direção: sem deformações nas partes
+         horizontais, que era o que a varredura por linhas provocava. */
+      var INF = 1e9;
+      var D = new Int32Array(W * H);
+      for (var k = 0; k < W * H; k++) {
+        D[k] = tintaEm(k % W, (k - k % W) / W) ? INF : 0;
+      }
+      function dv(i, j) { return (i < 0 || j < 0 || i >= W || j >= H) ? 0 : D[j * W + i]; }
+      /* duas passagens, com os pesos 3 na horizontal e 4 na diagonal */
+      for (var j = 0; j < H; j++) {
+        for (var i = 0; i < W; i++) {
+          var q = j * W + i;
+          if (!D[q]) { continue; }
+          D[q] = Math.min(D[q], dv(i - 1, j - 1) + 4, dv(i, j - 1) + 3,
+                                dv(i + 1, j - 1) + 4, dv(i - 1, j) + 3);
+        }
+      }
+      for (var j2 = H - 1; j2 >= 0; j2--) {
+        for (var i2 = W - 1; i2 >= 0; i2--) {
+          var q2 = j2 * W + i2;
+          if (!D[q2]) { continue; }
+          D[q2] = Math.min(D[q2], dv(i2 + 1, j2 + 1) + 4, dv(i2, j2 + 1) + 3,
+                                  dv(i2 - 1, j2 + 1) + 4, dv(i2 + 1, j2) + 3);
+        }
+      }
+      /* a crista: um pixel está no eixo se, nalguma direção, os dois
+         vizinhos opostos não estiverem mais fundo do que ele. Encontra o
+         meio do traço seja ele horizontal, vertical ou na diagonal, e
+         funciona na mesma onde os anéis se tocam e o traço engrossa. */
+      var DIRS = [[1, 0], [0, 1], [1, 1], [1, -1]];
+      var meios = [];
+      for (var j3 = 1; j3 < H - 1; j3++) {
+        for (var i3 = 1; i3 < W - 1; i3++) {
+          var v = D[j3 * W + i3];
+          if (!v || v === INF) { continue; }
+          for (var t = 0; t < 4; t++) {
+            var a1 = dv(i3 + DIRS[t][0], j3 + DIRS[t][1]);
+            var a2 = dv(i3 - DIRS[t][0], j3 - DIRS[t][1]);
+            if (v >= a1 && v >= a2 && (v > a1 || v > a2)) { meios.push([i3, j3]); break; }
+          }
+        }
+      }
+      if (!meios.length) { return; }
+
+      /* espalhar: só fica um ponto por cada vizinhança, para ficarem soltos */
+      var folga = FOLGA * (H / ALTO);
+      var ff = folga * folga;
+      var escolhidos = [];
+      meios.forEach(function (m) {
+        for (var k = 0; k < escolhidos.length; k++) {
+          var dx = escolhidos[k][0] - m[0], dy = escolhidos[k][1] - m[1];
+          if (dx * dx + dy * dy < ff) { return; }
+        }
+        escolhidos.push(m);
+      });
+
+      /* ordenar a andar sempre para o vizinho mais perto: a passagem de
+         um estado ao outro fica arrumada em vez de cruzada */
+      var ordem = [], sobra = escolhidos.slice();
+      var atual = sobra.splice(0, 1)[0];
+      ordem.push(atual);
+      while (sobra.length) {
+        var melhor = 0, dist = Infinity;
+        for (var k = 0; k < sobra.length; k++) {
+          var dx = sobra[k][0] - atual[0], dy = sobra[k][1] - atual[1];
+          var dd = dx * dx + dy * dy;
+          if (dd < dist) { dist = dd; melhor = k; }
+        }
+        atual = sobra.splice(melhor, 1)[0];
+        ordem.push(atual);
+      }
+
+      var k2 = ALTO / H;
+      var larg = W * k2;
+      var dy0 = (A - ALTO) / 2;
+      alvo = ordem.map(function (m) {
+        return { x: 2 + m[0] * k2, y: dy0 + m[1] * k2 };
+      });
+      pronto();
+    };
+    img.src = "assets/img/sym-black.png";
+  }
+
+  function montar(el) {
+    var c = document.createElement("canvas");
+    c.width = Math.round(L * DPR);
+    c.height = Math.round(A * DPR);
+    el.appendChild(c);
+    var ctx = c.getContext("2d");
+    ctx.scale(DPR, DPR);
+    var pts = [];
+    for (var i = 0; i < alvo.length; i++) { pts.push({ x: L / 2, y: A / 2 }); }
+    telas.push({ ctx: ctx, pts: pts, el: el });
+  }
+
+  /* a onda: poucos pontos, grandes e bem separados */
+  function onda(i, n, t) {
+    var x = 5 + (i / (n - 1)) * (L - 12);
+    var y = A / 2 + Math.sin(x * 0.11 + t * 0.0022) * 4.6
+                  + Math.sin(x * 0.045 - t * 0.0014) * 1.8;
+    return { x: x, y: y };
+  }
+
+  var CICLO = [
+    { nome: "onda",   dur: 3200 },
+    { nome: "juntar", dur: 1200 },
+    { nome: "logo",   dur: 2100 },
+    { nome: "soltar", dur: 1900 }
+  ];
+  var TOTAL = CICLO.reduce(function (s, f) { return s + f.dur; }, 0);
+  function suave(t) { return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+  /* o regresso à onda larga devagar no início e assenta sem solavanco */
+  function recuo(t) { return 1 - Math.pow(1 - t, 2.2); }
+
+  function desenhar(agora) {
+    var m = agora % TOTAL, acc = 0, fase = CICLO[0], dentro = 0;
+    for (var f = 0; f < CICLO.length; f++) {
+      if (m < acc + CICLO[f].dur) { fase = CICLO[f]; dentro = (m - acc) / CICLO[f].dur; break; }
+      acc += CICLO[f].dur;
+    }
+    var mistura = fase.nome === "onda"   ? 0
+                : fase.nome === "logo"   ? 1
+                : fase.nome === "juntar" ? suave(dentro)
+                                         : 1 - recuo(dentro);
+    var n = alvo.length;
+    /* cada ponto pequeno do símbolo é um caco de um ponto grande da onda.
+       Na onda está encostado ao pai e tem o tamanho dele: vê-se um ponto
+       só. Ao formar o símbolo, separa-se, encolhe e aparece. */
+    var raio = R_GRANDE + (R_PEQUENO - R_GRANDE) * mistura;
+
+    telas.forEach(function (tela) {
+      var ctx = tela.ctx;
+      ctx.clearRect(0, 0, L, A);
+
+      /* 1. onde está cada ponto nesta frame */
+      var agora2 = [];
+      for (var i = 0; i < n; i++) {
+        var pai = Math.floor(i * GRANDES / n);
+        var primeiro = (Math.floor((i - 1) * GRANDES / n) !== pai) || i === 0;
+        var o = onda(pai, GRANDES, agora);
+        var g = alvo[i];
+        var destino = mistura > 0
+          ? { x: o.x + (g.x - o.x) * mistura, y: o.y + (g.y - o.y) * mistura }
+          : o;
+        var pt = tela.pts[i];
+        pt.x += (destino.x - pt.x) * 0.22;
+        pt.y += (destino.y - pt.y) * 0.22;
+        /* os cacos só aparecem à medida que o ponto grande se parte */
+        var vis = primeiro ? 1 : Math.min(1, mistura * 1.6);
+        if (vis > 0.02) { agora2.push({ x: pt.x, y: pt.y, vis: vis, pai: pai }); }
+      }
+
+      /* 2. pintar cada cor numa folha à parte, e só depois passá-la com a
+         transparência final. Assim dois pontos sobrepostos dão a mesma
+         tinta que um só, em vez de somarem até ficarem opacos. Era isso
+         que acendia a cor a meio do regresso à onda. */
+      for (var c = 0; c < CORES.length; c++) {
+        var cor = CORES[c];
+        bctx.clearRect(0, 0, L, A);
+        bctx.fillStyle = cor.rgb;
+        for (var k = 0; k < agora2.length; k++) {
+          var d = agora2[k];
+          if ((d.pai % 3 === 0) !== cor.marca) { continue; }
+          bctx.globalAlpha = d.vis;
+          bctx.beginPath();
+          bctx.arc(d.x, d.y, raio, 0, 6.2832);
+          bctx.fill();
+        }
+        bctx.globalAlpha = 1;
+        ctx.globalAlpha = cor.alfa;
+        ctx.drawImage(folha, 0, 0, L, A);
+        ctx.globalAlpha = 1;
+      }
+    });
+    pedido = requestAnimationFrame(desenhar);
+  }
+
+  window.__pontosSimbolo = function (ligar) {
+    document.documentElement.classList.toggle("pontos-simbolo", !!ligar);
+    if (!ligar) {
+      if (pedido) { cancelAnimationFrame(pedido); pedido = null; }
+      telas.forEach(function (t) { t.el.removeChild(t.ctx.canvas); });
+      telas = [];
+      return;
+    }
+    if (telas.length) { return; }
+    function arranca() {
+      abrirFolha();
+      document.querySelectorAll(".work-title.redacted, .eco-fechado .redacted").forEach(montar);
+      if (telas.length && !pedido) { pedido = requestAnimationFrame(desenhar); }
+    }
+    if (alvo) { arranca(); } else { lerSimbolo(arranca); }
+  };
+})();
+
+/* o rodapé fixo e a animação dos pontos ligam-se depois da página montar */
+(function () {
+  function ligar() {
+    if (window.__rodapeFixo)    { window.__rodapeFixo(true); }
+    if (window.__pontosSimbolo) { window.__pontosSimbolo(true); }
+  }
+  if (document.readyState === "complete") { setTimeout(ligar, 60); }
+  else { window.addEventListener("load", function () { setTimeout(ligar, 60); }); }
 })();

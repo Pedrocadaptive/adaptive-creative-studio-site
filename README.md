@@ -7,15 +7,15 @@ Site estático, sem build e sem dependências: HTML, CSS e JavaScript simples. P
 ## Estrutura
 
 ```
-index.html            todas as páginas: Início, Estúdio, Contacto e Adaptive Guild
+index.html            todas as páginas: Início, Estúdio, Contacto e Adaptive Labs
 assets/css/site.css   estilos
 assets/js/site.js     navegação, animações, idioma PT/EN e formulário
 assets/img/           logótipo, símbolo e fotografia da equipa
 assets/icons/         favicon e ícone para ecrã inicial
 ```
 
-As páginas trocam pelo endereço: `#inicio`, `#estudio`, `#contacto` e `#guild`.
-O `#labs` é o nome antigo do Guild e continua a abrir a mesma página.
+As páginas trocam pelo endereço: `#inicio`, `#estudio`, `#contacto` e `#labs`.
+O `#labs` é o nome antigo do Labs e continua a abrir a mesma página.
 
 ## Ver localmente
 
