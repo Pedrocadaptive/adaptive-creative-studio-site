@@ -731,9 +731,7 @@ img { max-width: 100%; display: block; }
 @media (max-width: 899px) {
   .chip-field { display: none; }
   .marquee { position: relative; width: 100vw; margin-inline: calc(50% - 50vw); overflow: hidden; display: grid; gap: 12px; }
-  /* alinhados pelo meio: assim os cards de texto ficam com a altura
-     deles e as fotografias com a delas, em vez de esticarem todos */
-  .marquee-row { display: flex; align-items: center; gap: 12px; width: max-content; }
+  .marquee-row { display: flex; gap: 12px; width: max-content; }
   .marquee-row.a { animation: slide 34s linear infinite; }
   .marquee-row.b { animation: slide 34s linear infinite reverse; }
   .marquee .chip { flex: none; }
