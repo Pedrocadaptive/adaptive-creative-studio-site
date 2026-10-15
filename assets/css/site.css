@@ -731,7 +731,9 @@ img { max-width: 100%; display: block; }
 @media (max-width: 899px) {
   .chip-field { display: none; }
   .marquee { position: relative; width: 100vw; margin-inline: calc(50% - 50vw); overflow: hidden; display: grid; gap: 12px; }
-  .marquee-row { display: flex; gap: 12px; width: max-content; }
+  /* alinhados pelo meio: assim os cards de texto ficam com a altura
+     deles e as fotografias com a delas, em vez de esticarem todos */
+  .marquee-row { display: flex; align-items: center; gap: 12px; width: max-content; }
   .marquee-row.a { animation: slide 34s linear infinite; }
   .marquee-row.b { animation: slide 34s linear infinite reverse; }
   .marquee .chip { flex: none; }
@@ -1767,6 +1769,13 @@ html.notice-open #view-contacto { padding-bottom: 220px; }
   position: relative;
   display: block;
   width: 100%;
+  /* é um botão: leva ao Sobre */
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  transition: opacity .35s ease;
   grid-column: 1 / -1;   /* acompanha a coluna do contacto, que aqui é a largura toda */
 }
 .megafoot-mark img {
@@ -1923,6 +1932,7 @@ html.notice-open #view-contacto { padding-bottom: 220px; }
 .mfcol a, .mfcol button { cursor: pointer; }
 .mfcol a:hover, .mfcol button:hover { color: #fff; }
 .mfstatic { color: rgba(255,255,255,.72); }
+.mark-wrap:hover { opacity: .82; }
 .mfsoon em {
   font-style: normal;
   font-size: 9.5px;
