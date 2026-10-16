@@ -158,17 +158,29 @@
 
   /* na fita entram só as fotografias: as peças de luz azul e roxa viviam
      da órbita, e numa fila a par dos cards só faziam confusão */
-  var FOTOS = TILES.filter(function (t) { return t.v === 2 || t.v === 3 || t.v === 5; });
+  var FOTOS = TILES.filter(function (t) { return t.v !== 1 && t.v !== 4; });
+
+  /* as duas linhas levam tudo, mas cada uma começa noutro ponto da fila.
+     Assim nunca se vê o mesmo card nas duas rolagens ao mesmo tempo. */
+  var FILA = [];
+  (function () {
+    var cards = SERVICES.map(function (s, i) { return { card: { s: s, i: i } }; });
+    var fotos = FOTOS.map(function (t) { return { foto: t }; });
+    var n = Math.max(cards.length, fotos.length);
+    for (var k = 0; k < n; k++) {
+      if (cards[k]) { FILA.push(cards[k]); }
+      if (fotos[k]) { FILA.push(fotos[k]); }
+    }
+  })();
 
   document.querySelectorAll("[data-clone]").forEach(function (row, r) {
-    var order = SERVICES.map(function (s, i) { return { s: s, i: i }; });
-    var pecas = FOTOS.slice();
-    if (r === 1) { order.reverse(); pecas.reverse(); }
-    var p = 0;
-    order.concat(order).forEach(function (o, k) {
-      row.appendChild(makeChip(o.s, o.i, false));
-      /* uma fotografia a cada dois cards, para a fita respirar */
-      if (k % 2 === 1) { row.appendChild(pecaDaFita(pecas[(p++) % pecas.length])); }
+    /* a segunda linha arranca a meio da fila */
+    var salto = r * Math.floor(FILA.length / 2);
+    var fila = FILA.slice(salto).concat(FILA.slice(0, salto));
+    /* a fita corre metade da sua largura, por isso o conjunto entra duas
+       vezes e a emenda não se vê */
+    fila.concat(fila).forEach(function (x) {
+      row.appendChild(x.card ? makeChip(x.card.s, x.card.i, false) : pecaDaFita(x.foto));
     });
   });
 
