@@ -309,6 +309,26 @@
     rdle3: "Care", rdle3d: "From another angle, it is someone lying on the table, arms half open, given over to the treatment.",
     rdl8: "Applications", rdl8s: "Uniforms and merchandising",
     rdback: "See all work", rdcta: "Want an identity like this?",
+    audcat: "Campaign Systems",
+    audm1: "Project", audm1v: "Spec Ad Audi",
+    audm2: "Work", audm3: "Year",
+    audl1: "The starting point",
+    audp1: "This film was not commissioned. Audi had no part in it. It was made on our own initiative, to test one question: how far can a car ad be taken by a team of one, with the tools that are now within anyone’s reach.",
+    audp2: "There was no brief, no client and no production budget. There was a car, a coast road, and the will to find out where artificial intelligence already does the work of a whole crew, and where it still falls short.",
+    audl2: "The idea",
+    audp3: "The road at daybreak, above the clouds, and a couple driving down to the sea. The car comes along as company, not as the lead. You are not looking at a spec sheet, you are looking at a morning you would like to have.",
+    audp4: "The rings appear once, and they appear once the picture has already said everything. That was the rule.",
+    audl3: "What was generated", audl3s: "And what was filmed",
+    aud1: "The aerial shots", aud1d: "They needed a drone, permits and a window of light that does not come twice. They were generated.",
+    aud2: "Some of the driving shots", aud2d: "The ones that needed a second car following, or the road closed just for us. Those too.",
+    aud3: "The voice", aud3d: "Written, directed and generated, instead of recorded in a studio.",
+    aud4: "The rest", aud4d: "Filmed on the road, with the camera strapped to the car and the light there was.",
+    audl4: "What it leaves",
+    audp5: "Choosing what to generate and what to film was not about taking the easy road, it was arithmetic. Every generated shot is a shot that, alone and without a crew, would not exist at all.",
+    audp6: "Fifty two seconds, start to finish, made by one person. With a budget you still do better, and that does not change. What changed is the distance between the two.",
+    audnota: "A concept piece, made on our own initiative. Audi neither commissioned nor took part in this film, and the brands shown belong to their owners.",
+    audmote: "Creativity no longer brakes for budget.",
+    audback: "See all work", audcta: "Want a campaign like this?",
     okeye: "Message sent",
     okp: "We have received your request. We will read it carefully and reply to the email you gave us.",
     okagain: "Send another message",
@@ -451,7 +471,8 @@
     contacto: document.getElementById("view-contacto"),
     labs:     document.getElementById("view-labs"),
     privacidade: document.getElementById("view-privacidade"),
-    rd:          document.getElementById("view-rd")
+    rd:          document.getElementById("view-rd"),
+    audi:        document.getElementById("view-audi")
   };
   var current = "inicio";
   var vistaInicial = true;
@@ -470,6 +491,7 @@
     document.title =
       current === "labs"        ? "Adaptive Labs | Earn The Future" :
       current === "rd"          ? "RD Fisioterapia | Adaptive Creative Studio" :
+      current === "audi"        ? "Lugares Impossíveis (AUDI) | Adaptive Creative Studio" :
       current === "privacidade" ? "Política de Privacidade | Adaptive Creative Studio" :
                                   "Adaptive Creative Studio | Earn The Future";
     /* página nova vista, contada só depois da primeira */

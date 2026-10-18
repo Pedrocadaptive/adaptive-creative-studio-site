@@ -2197,3 +2197,13 @@ html.rodape-fixo #shell {
 .tile.v8 { background: #0b0b14 url(../img/stage/peca-sala.jpg) center / cover no-repeat; }
 .tile.v9 { background: #0b0b14 url(../img/stage/peca-auscultadores.jpg) center / cover no-repeat; }
 .tile.v6::after, .tile.v7::after, .tile.v8::after, .tile.v9::after { background: none; }
+
+/* a nota de pé da página do caso, para quem quiser saber do enquadramento */
+.caso-nota {
+  margin: 26px 0 0;
+  max-width: 62ch;
+  font-size: .82rem;
+  line-height: 1.6;
+  color: var(--muted);
+  opacity: .8;
+}
